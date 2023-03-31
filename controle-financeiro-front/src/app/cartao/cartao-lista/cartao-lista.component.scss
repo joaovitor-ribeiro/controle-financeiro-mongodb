@@ -1,0 +1,26 @@
+table {
+  width: 75%;
+}
+
+.cabecalho{
+  padding-bottom: 30px;
+}
+
+.dadosCartoes{
+  padding: 30px;
+}
+
+.marginTable {
+  margin-top: 30px;
+}
+
+.botaoFiltrar {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .campoFiltro {
+  .mat-form-field-wrapper {
+    padding: 0;
+  }
+}

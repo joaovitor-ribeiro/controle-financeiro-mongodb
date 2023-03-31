@@ -1,0 +1,111 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="pacman">
+  <p style="color: white">Carregando... </p>
+</ngx-spinner>
+
+<div *ngIf="!carregando" class="divCartaoUsuario">
+  <mat-card class="card">
+    <mat-card-header class="cardHeader">
+      <mat-card-title>
+        <h2>Cadastro de usuário</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="cardContent">
+      <div class="divAll">
+        <div class="divForm">
+          <form [formGroup]="usuarioFormulario">
+            <div class="row w-100">
+              <div class="col-md">
+                <input-field label="Nome de usuário"
+                             [foco]="true"
+                             formControlName="nome"
+                             [control]="propriedade?.nome"
+                             [maximo]="50"
+                             [minimo]="0"
+                             mensagemRequired="Insira um nome de usuário.">
+                </input-field>
+              </div>
+            </div>
+
+            <div class="row w-100">
+              <div class="col-md">
+                <mat-form-field class="example-form-field w-100" appearance="outline">
+                  <mat-label>CPF</mat-label>
+                  <input matInput type="text" formControlName="cpf" required maxlength="11">
+
+                  <mat-error *ngIf="propriedade.cpf.touched && propriedade.cpf.errors?.required">
+                    Insira um CPF.
+                  </mat-error>
+
+                  <mat-error *ngIf="propriedade.cpf.touched && propriedade.cpf.errors?.cpfInvalido">
+                    CPF inválido.
+                  </mat-error>
+
+                  <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('cpf')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row w-100">
+              <div class="col-md">
+                <mat-form-field class="example-form-field w-100" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="text" formControlName="email" required maxlength="50">
+
+                  <mat-error *ngIf="propriedade.email.touched && propriedade.email.errors?.required">
+                    Insira um E-mail.
+                  </mat-error>
+
+                  <mat-error *ngIf="propriedade.email.touched && propriedade.email.errors?.email">
+                    E-mail inválido.
+                  </mat-error>
+
+                  <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('email')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row w-100">
+              <div class="col-md">
+                <input-field label="Senha"
+                             formControlName="senha"
+                             type="password"
+                             [control]="propriedade?.senha"
+                             [minimo]="0"
+                             mensagemRequired="Insira uma senha.">
+                </input-field>
+              </div>
+            </div>
+          </form>
+
+          <div class="divBotoesUsuario">
+            <a href="*" class="linkFacaLogin">Faça login</a>
+            <button mat-raised-button color="primary" (click)="enviarFormulario()" id="botaoCadastrar">Cadastrar</button>
+          </div>
+        </div>
+
+        <div class="w-100">
+          <div class="row w-100">
+            <div class="col-md d-flex justify-content-center">
+              <img id="foto" [src]="objectURL" class="tamanhoImagem"/>
+            </div>
+          </div>
+          <br>
+
+          <div class="divEscolherFoto">
+            <input hidden type="file" #fileInput name="foto" (change)="selecionarFoto($event)" accept="image/*" />
+            <button type="button" mat-raised-button (click)="fileInput.click()" class="corTexto">
+              Escolha a sua foto
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+</div>

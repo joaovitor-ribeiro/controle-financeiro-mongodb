@@ -1,0 +1,55 @@
+::ng-deep .confirmDialog {
+
+  height: calc(100vh - 3.5rem)!important;
+  display: flex!important;
+  align-items: center!important;
+  background-color: unset;
+
+  .modal-header {
+    border-bottom: unset;
+    padding: 0;
+  }
+
+  .modal-body {
+    padding: 1rem 1rem 0.4rem 1rem;
+  }
+
+  .modal-footer {
+    border-top: unset;
+    padding: 0px 0.75rem 0.75rem 0.75rem;
+  }
+
+  .modal-backdrop {
+    background-color: unset!important;
+  }
+
+  .modal-content {
+    background-color: white!important;
+    min-width: 27vw;
+    border: 1px solid rgba(0, 0, 0, 0.2)!important;
+  }
+}
+
+::ng-deep .modal-content {
+  background-color: unset;
+  background-clip: unset;
+  border: unset;
+}
+
+.botaoFooter {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.fonteMsg {
+  font-size: 17px;
+}
+
+.botaoFechar {
+  margin-right: 5px;
+}
+
+.icon {
+   color: orange;
+}
