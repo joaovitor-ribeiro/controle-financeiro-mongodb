@@ -18,7 +18,7 @@
             <input-field label="Descrição"
                          [foco]="true"
                          formControlName="descricao"
-                         [control]="propriedade?.descricao"
+                         [control]="propriedade.descricao"
                          mensagemRequired="Insira a descrição."
                          mensagemMin="A descrição não pode ter menos do que 3 caracteres.">
             </input-field>
@@ -38,7 +38,7 @@
                 Escolha a categoria.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('categoria')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('categoria')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -72,7 +72,7 @@
                 Data inválida.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('data')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('data')">
                 <mat-icon>close</mat-icon>
               </button>
 

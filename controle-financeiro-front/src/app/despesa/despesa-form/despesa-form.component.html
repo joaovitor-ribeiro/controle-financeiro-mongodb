@@ -25,7 +25,7 @@
                 Escolha o cartão.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('cartao')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('cartao')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -36,7 +36,7 @@
           <div class="col-md">
             <input-field label="Descrição"
                          formControlName="descricao"
-                         [control]="propriedade?.descricao"
+                         [control]="propriedade.descricao"
                          mensagemRequired="Insira uma descrição."
                          mensagemMin="A descrição não pode ter menos do que 3 caracteres.">
             </input-field>
@@ -56,7 +56,7 @@
                 Escolha a categoria.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('categoria')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('categoria')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -90,7 +90,7 @@
                 Data inválida.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('data')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('data')">
                 <mat-icon>close</mat-icon>
               </button>
 

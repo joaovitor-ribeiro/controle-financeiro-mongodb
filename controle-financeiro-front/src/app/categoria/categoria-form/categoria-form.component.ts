@@ -98,7 +98,7 @@ export class CategoriaFormComponent implements OnInit {
     }
   }
 
-  limparBotoes(campo:string) {
+  limparCampo(campo:string) {
     this.categoriaFormulario.get(campo)?.setValue('');
   }
 

@@ -92,7 +92,10 @@ export class DespesaFormComponent implements OnInit, AfterContentChecked {
   }
 
   async validarValor(formControl: FormControl) {
-    return formControl.value?.replace(',', '.') <= 0 ? { valorInvalido: true } : null;
+    let valor = String(formControl?.value);
+    valor = valor.includes('.') ? valor?.replace('.', '') : valor;
+    valor = valor.includes(',') ? valor?.replace(',', '.') : valor;
+    return Number(valor) <= 0 ? { valorInvalido: true } : null;
   }
 
   private async carregarCartao() {
@@ -114,7 +117,7 @@ export class DespesaFormComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  limparBotoes(campo: string) {
+  limparCampo(campo: string) {
     this.despesaFormulario.get(campo)?.setValue('');
   }
 
@@ -162,11 +165,9 @@ export class DespesaFormComponent implements OnInit, AfterContentChecked {
   }
 
   formataValor(valor: string) {
-    if (String(valor).includes('.') || String(valor).includes(',')) {
-      valor = valor.replace('/[^0-9]/g', '');
-      valor = valor.replace('.', '')
-      valor = Number(valor.replace(',', '.')) + "";
-    }
+    valor = String(valor);
+    valor = valor.includes('.') ? valor?.replace('.', '') : valor;
+    valor = valor.includes(',') ? valor?.replace(',', '.') : valor;
     return valor;
   }
 

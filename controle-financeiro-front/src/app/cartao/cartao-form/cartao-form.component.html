@@ -17,7 +17,7 @@
             <input-field label="Nome"
                          [foco]="true"
                          formControlName="nome"
-                         [control]="propriedade?.nome"
+                         [control]="propriedade.nome"
                          mensagemRequired="Insira o nome."
                          mensagemMin="O nome não pode ter menos do que 3 caracteres.">
             </input-field>
@@ -37,7 +37,7 @@
                 Escolha a bandeira.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('bandeira')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('bandeira')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -68,7 +68,7 @@
                 O número do cartão não corresponde a bandeira.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('numero')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('numero')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>

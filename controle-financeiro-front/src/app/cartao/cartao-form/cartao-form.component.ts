@@ -66,16 +66,11 @@ export class CartaoFormComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  //Validação assíncrona
   async validarLimite(formControl: FormControl) {
-    //Exemplo de operador ternário
-    return formControl.value <= 0 ? { limiteInvalido: true } : null;
-    /*
-    if (formControl.value <= 0) {
-      return {limiteInvalido: true}
-    }
-    return null;
-    */
+    let valor = String(formControl?.value);
+    valor = valor.includes('.') ? valor?.replace('.', '') : valor;
+    valor = valor.includes(',') ? valor?.replace(',', '.') : valor;
+    return Number(valor) <= 0 ? { limiteInvalido: true } : null;
   }
 
   async validarCartao(formControl: FormControl) {
@@ -87,14 +82,12 @@ export class CartaoFormComponent implements OnInit, AfterContentChecked {
   }
 
   enviarFormulario() {
+    console.log(this.cartaoFormulario.get('limite')?.value);
     if (this.cartaoFormulario.invalid) {
       this.cartaoFormulario.markAllAsTouched();
     }else{
       const cartao = this.cartaoFormulario.getRawValue();
-
-      cartao.limite = cartao.limite.replace('/[^0-9]/g', '');
-      cartao.limite = cartao.limite.replace('.', '')
-      cartao.limite = Number(cartao.limite.replace(',', '.'));
+      cartao.limite = this.formataValor(cartao.limite);
 
       if (this.editar) {
         this.cartaoService.editar(this.id, cartao).subscribe(() => {
@@ -110,7 +103,7 @@ export class CartaoFormComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  limparBotoes(valor: string) {
+  limparCampo(valor: string) {
     this.cartaoFormulario.get(valor)?.setValue('');
   }
 
@@ -183,6 +176,13 @@ export class CartaoFormComponent implements OnInit, AfterContentChecked {
       default:
         return false;
     }
+  }
+
+  formataValor(valor: string) {
+    valor = String(valor);
+    valor = valor.includes('.') ? valor?.replace('.', '') : valor;
+    valor = valor.includes(',') ? valor?.replace(',', '.') : valor;
+    return valor;
   }
 
 }
