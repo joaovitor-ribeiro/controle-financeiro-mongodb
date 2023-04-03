@@ -1,0 +1,38 @@
+[
+  {
+    "nome": "Bradesco",
+    "bandeira": "Visa",
+    "numero": "4539063642617856",
+    "limite": "1200"
+  },
+  {
+    "nome": "Nubank",
+    "bandeira": "Mastercard",
+    "numero": "5481132071163156",
+    "limite": "1300"
+  },
+  {
+    "nome": "Centurion",
+    "bandeira": "American Express",
+    "numero": "347099436377810",
+    "limite": "1500"
+  },
+  {
+    "nome": "Caixa",
+    "bandeira": "JCB",
+    "numero": "3596788135012213",
+    "limite": "1700"
+  },
+  {
+    "nome": "ELO",
+    "bandeira": "Diners Club",
+    "numero": "30289539153372",
+    "limite": "1900"
+  },
+  {
+    "nome": "Santander",
+    "bandeira": "Hipercard",
+    "numero": "6062824301637513",
+    "limite": "2200"
+  }
+]

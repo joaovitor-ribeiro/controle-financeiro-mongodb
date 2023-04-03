@@ -1,0 +1,65 @@
+[
+  {
+    "nome": "",
+    "bandeira": "Visa",
+    "numero": "4539063642617856",
+    "limite": "1200",
+    "mensagem": "Insira o nome."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "",
+    "numero": "4539063642617856",
+    "limite": "1200",
+    "mensagem": "Escolha a bandeira."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "Visa",
+    "numero": "",
+    "limite": "1200",
+    "mensagem": "Insira o número."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "Visa",
+    "numero": "4539063642617856",
+    "limite": "",
+    "mensagem": "Insira o limite."
+  },
+  {
+    "nome": "It",
+    "bandeira": "Visa",
+    "numero": "4539063642617856",
+    "limite": "1200",
+    "mensagem": "O nome não pode ter menos do que 3 caracteres."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "Visa",
+    "numero": "45390636426",
+    "limite": "1200",
+    "mensagem": "O número deve conter entre 13 e 16 dígitos."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "Visa",
+    "numero": "4539063111111111",
+    "limite": "1200",
+    "mensagem": "Número de cartão inválido."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "Visa",
+    "numero": "3596788135012213",
+    "limite": "1200",
+    "mensagem": "O número do cartão não corresponde a bandeira."
+  },
+  {
+    "nome": "Itaú",
+    "bandeira": "Visa",
+    "numero": "4539063642617856",
+    "limite": "0",
+    "mensagem": "O limite tem que ser maior que 0."
+  }
+]

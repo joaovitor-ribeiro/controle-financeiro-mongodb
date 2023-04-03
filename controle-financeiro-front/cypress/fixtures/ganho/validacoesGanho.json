@@ -1,0 +1,37 @@
+[
+  {
+    "descricao": "",
+    "categoria": "Aula",
+    "valor": "1850,69",
+    "data": "06/14/2022",
+    "mensagem": "Insira a descrição."
+  },
+  {
+    "descricao": "Au",
+    "categoria": "Aula",
+    "valor": "1850,69",
+    "data": "06/14/2022",
+    "mensagem": "A descrição não pode ter menos do que 3 caracteres."
+  },
+  {
+    "descricao": "Aula particular",
+    "categoria": "",
+    "valor": "1850,69",
+    "data": "06/14/2022",
+    "mensagem": "Escolha a categoria."
+  },
+  {
+    "descricao": "Aula particular",
+    "categoria": "Aula",
+    "valor": "",
+    "data": "06/14/2022",
+    "mensagem": "Insira o valor."
+  },
+  {
+    "descricao": "Aula particular",
+    "categoria": "Aula",
+    "valor": "0,00",
+    "data": "06/14/2022",
+    "mensagem": "O valor tem que ser maior que 0."
+  }
+]

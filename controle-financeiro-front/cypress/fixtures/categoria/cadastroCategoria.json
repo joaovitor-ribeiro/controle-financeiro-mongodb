@@ -1,0 +1,10 @@
+[
+  {
+    "nome": "Salário",
+    "tipo": "G"
+  },
+  {
+    "nome": "Cartão de crédito",
+    "tipo": "D"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "cartao": "",
+    "descricao": "Prestação faculdade",
+    "categoria": "Faculdade",
+    "valor": "845,00",
+    "data": "06/14/2022",
+    "mensagem": "Escolha o cartão."
+  },
+  {
+    "cartao": "5173 8634 0599 6183",
+    "descricao": "",
+    "categoria": "Faculdade",
+    "valor": "845,00",
+    "data": "06/14/2022",
+    "mensagem": "Insira uma descrição."
+  },
+  {
+    "cartao": "5173 8634 0599 6183",
+    "descricao": "Pr",
+    "categoria": "Faculdade",
+    "valor": "845,00",
+    "data": "06/14/2022",
+    "mensagem": "A descrição não pode ter menos do que 3 caracteres."
+  },
+  {
+    "cartao": "5173 8634 0599 6183",
+    "descricao": "Prestação faculdade",
+    "categoria": "",
+    "valor": "845,00",
+    "data": "06/14/2022",
+    "mensagem": "Escolha a categoria."
+  },
+  {
+    "cartao": "5173 8634 0599 6183",
+    "descricao": "Prestação faculdade",
+    "categoria": "Faculdade",
+    "valor": "",
+    "data": "06/14/2022",
+    "mensagem": "Insira o valor."
+  },
+  {
+    "cartao": "5173 8634 0599 6183",
+    "descricao": "Prestação faculdade",
+    "categoria": "Faculdade",
+    "valor": "0,00",
+    "data": "06/14/2022",
+    "mensagem": "O valor tem que ser maior que 0."
+  }
+]

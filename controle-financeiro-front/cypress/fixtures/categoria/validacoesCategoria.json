@@ -1,0 +1,17 @@
+[
+  {
+    "nome": "",
+    "tipo": "G",
+    "mensagem": "Insira o nome."
+  },
+  {
+    "nome": "Sa",
+    "tipo": "G",
+    "mensagem": "O nome não pode ter menos do que 3 caracteres."
+  },
+  {
+    "nome": "Salário",
+    "tipo": "",
+    "mensagem": "Escolha o tipo."
+  }
+]
