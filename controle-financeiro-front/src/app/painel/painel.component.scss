@@ -27,6 +27,7 @@
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+  overflow: auto;
 }
 
 .divData {
@@ -35,7 +36,8 @@
   margin-top: 1.5rem;
 }
 
-.botaoFiltrar {
+
+.botaoFiltrarPainel {
   display: flex;
   align-items: center;
   margin-top: 0.5rem;
@@ -45,11 +47,24 @@
 .divPesquisa {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: end;
+  justify-content: center;
 }
 
 .divGrupoPesquisa {
-  margin-left: 3.5rem;
-  width: 50% !important;
+  width: 100% !important;
+  overflow: auto;
+}
+
+.divCardPainel {
+  padding: 3rem;
+}
+
+.tamanhoCardPainel {
+  @media screen and (max-width: 1400px) {
+    max-width: 75%;
+  }
+  @media screen and (max-width: 1180px) {
+    max-width: 100%;
+  }
+  max-width: 60%;
 }

@@ -12,15 +12,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { CardPainelModule } from './card-painel/card-painel.module';
 import { PainelRoutingModule } from './painel-routing.module';
 import { PainelComponent } from './painel.component';
 
-registerLocaleData(ptBr); //Outra maneira de formatar dinheiro no HTML
+registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [
-    PainelComponent
-  ],
+  declarations: [ PainelComponent ],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -34,7 +33,8 @@ registerLocaleData(ptBr); //Outra maneira de formatar dinheiro no HTML
     MatDatepickerModule,
     ReactiveFormsModule,
     FormsModule,
-    PainelRoutingModule
+    PainelRoutingModule,
+    CardPainelModule
   ],
   exports: [
     PainelComponent

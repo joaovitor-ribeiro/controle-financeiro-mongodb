@@ -11,6 +11,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
+import { CardPainel } from './card-painel/card-paine.model';
 
 const moment = _rollupMoment || _moment;
 
@@ -41,10 +42,12 @@ export const MY_FORMATS = {
   ],
 })
 export class PainelComponent implements OnInit {
+
   painel!: Painel;
   carregando = false;
   chartLegend = true;
   chartPlugins = [];
+  cardPaineis: CardPainel[] = []
 
   chartOptions: ChartOptions<'pie'> = {
     responsive: false,
@@ -66,6 +69,23 @@ export class PainelComponent implements OnInit {
   ngOnInit(): void {
     this.carregarPainel();
     this.data = new FormControl(moment());
+  }
+
+  instaciaPaines() {
+    this.cardPaineis = [
+      {
+        icone: 'trending_up',
+        texto: 'Ganhos de ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+      },
+      {
+        icone: 'trending_down',
+        texto: 'Despesas de ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+      },
+      {
+        icone: 'account_balance',
+        texto: 'Saldo de ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+      },
+    ];
   }
 
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
@@ -93,6 +113,7 @@ export class PainelComponent implements OnInit {
         this.chartDatasets = [
           {data: [this.painel.totalGanho, this.painel.totalDespesa]}
         ];
+        this.instaciaPaines();
       });
   }
 }

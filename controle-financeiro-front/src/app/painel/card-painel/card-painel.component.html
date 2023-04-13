@@ -1,0 +1,21 @@
+<div class="divLinhaPainel">
+  <div *ngFor="let item of cardPaineis">
+    <div class="col-lg-12 mr-4">
+      <mat-card class="card cardPainel">
+        <mat-card-content class="cardContent">
+
+          <div class="divComponentes">
+            <div class="tamanhoIcone">
+              <mat-icon style="font-size: 50px">{{item?.icone}}</mat-icon>
+            </div>
+
+            <div class="tamanhoTexto">
+              {{item?.texto}}
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

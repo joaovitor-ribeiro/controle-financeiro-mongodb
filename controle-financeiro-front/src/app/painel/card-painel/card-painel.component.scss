@@ -1,0 +1,26 @@
+.divComponentes {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.tamanhoIcone {
+  width: 36%;
+}
+
+.tamanhoTexto {
+  width: 51%;
+}
+
+.divLinhaPainel {
+  display: flex;
+  justify-content: center;
+  width: 100%!important;
+  padding-top: 3rem;
+  overflow: auto;
+}
+
+.cardPainel {
+  min-width: 162px;
+  max-width: 200px;
+}

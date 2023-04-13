@@ -54,3 +54,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-left: 20px;
   }
 }
+
+.marginTable {
+  @media screen and (max-width: 1650px) {
+    width: 100%;
+  }
+  width: 90%;
+  overflow: auto;
+  min-width: 850px;
+  max-width: 100%;
+  margin-top: 30px;
+}
+
+.botaoFiltrar {
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 1100px) {
+    width: 100%;
+    justify-content: flex-end;
+    padding: 15px;
+  }
+}
+
+.cardForm {
+  max-width: 100%!important;
+  overflow: auto!important;
+  min-width: 350px!important;
+}
