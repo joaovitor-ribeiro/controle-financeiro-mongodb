@@ -2,7 +2,6 @@
   border-radius: 50%;
   height: 7vh!important;
   margin: 20px;
-  margin-bottom: 4rem;
 }
 
 .backgroud {
@@ -27,7 +26,7 @@
 .sidenav {
   width: 280px;
   @media screen and (max-width: 1000px) {
-    width: 200px;
+    width: 110px;
   }
 }
 
@@ -35,10 +34,16 @@
   cursor: pointer
 }
 
-.optionUsuario {
+::ng-deep .optionUsuario {
   height:20vh!important;
   color: white;
   margin-bottom: 10px;
+  .mat-list-text {
+    align-items: center;
+    width: 100%;
+    padding: 0px;
+    margin: 5px!important;
+  }
 }
 
 .imagemBackgroud {
@@ -49,8 +54,10 @@
 .spanUsuario {
   position: absolute!important;
   bottom: 25px!important;
-  margin-left: 20px!important;
+  width: 100%;
+  text-align: center;
   font-size: 17px!important;
+  color: white;
 }
 
 .divOption {
@@ -69,10 +76,24 @@
   justify-content: center;
 }
 
-.buttonUsuario {
-  width: 0px!important;
-  height: 0px!important;
+::ng-deep .buttonUsuario {
   border: unset!important;
   padding: 0!important;
+  display: flex;
+  width: 100%!important;
+  height: 100%!important;
+  background: transparent;
+  align-items: center;
 }
 
+
+::ng-deep .iconCentralizado {
+  @media screen and (max-width: 1000px) {
+    .mat-list-text {
+      align-items: center;
+      width: 100%;
+      padding: 0px!important;
+      margin: 0!important;
+    }
+  }
+}

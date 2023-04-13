@@ -132,9 +132,9 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
       <mat-paginator [pageSizeOptions]="[5, 15, 20]"
-                     [pageSize]="pageGanho?.size"
-                     [pageIndex]="pageGanho?.number"
-                     [length]="pageGanho?.totalElements"
+                     [pageSize]="pageGanho.size"
+                     [pageIndex]="pageGanho.number"
+                     [length]="pageGanho.totalElements"
                      (page)="paginar($event)"
                      showFirstLastButtons
                      class="widthPaginator">

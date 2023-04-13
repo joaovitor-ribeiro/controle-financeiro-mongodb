@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Token } from './login/login.model';
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   id!: number;
   usuario!: Token;
   objectURL!: string;
+  tamanhoWidth = window.innerWidth;
 
   constructor(
     private router : Router,
@@ -66,5 +67,11 @@ export class AppComponent implements OnInit {
 
   exibirSemLogin() {
     return (this.router.url.includes('/entrar') || this.router.url.includes('usuario/inserir') ) && !this.exibe;
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.tamanhoWidth = event.target.innerWidth;
   }
 }

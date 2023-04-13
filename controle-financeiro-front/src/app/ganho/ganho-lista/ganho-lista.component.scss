@@ -22,6 +22,9 @@ table {
 
 .widthCabecalho {
   width: 87%;
+  overflow: auto;
+  max-width: 100%;
+  min-width: 600px;
   @media screen and (max-width: 1650px) {
     width: 100%;
   }
