@@ -1,50 +1,30 @@
 package controlefinanceiro.config;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
-@EnableWebMvc
 public class ControleFinanceiroConfig implements WebMvcConfigurer {
 	
 	@Bean
-	public Docket forumApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("controlefinanceiro"))
-				.paths(PathSelectors.any())
-				.build()
-				.apiInfo(infosApi())
-				.consumes(new HashSet< String >(Arrays.asList( MediaType.APPLICATION_JSON_VALUE )))
-				.produces(new HashSet< String >(Arrays.asList( MediaType.APPLICATION_JSON_VALUE )))
-				.genericModelSubstitutes( ResponseEntity.class )
-				.forCodeGeneration( true );
+	public OpenAPI openApi() {
+		return new OpenAPI()
+				.components(new Components())
+				.info(
+						new Info()
+						.title("Controle Financeiro")
+						.contact(new Contact().name("controle-financeiro")).version("1.0.0"));
 	}
-	
-	private ApiInfo infosApi() {
-		return new ApiInfoBuilder()
-				.title("CONTROLE-FINANCEIRO")
-				.description("API controle financeiro")
-				.build();
-	}
-	
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -68,5 +48,5 @@ public class ControleFinanceiroConfig implements WebMvcConfigurer {
          registry.addRedirectViewController("/api/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
          registry.addRedirectViewController("/api/swagger-resources", "/swagger-resources");
      }
-
+     
 }

@@ -49,9 +49,14 @@ public class SecurityConfigurations {
 		.csrf().disable()
 		.authorizeHttpRequests((authz) -> {
 			try {
-				authz	
+				authz
 					.requestMatchers(HttpMethod.POST, "/autenticacao").permitAll()
 					.requestMatchers(HttpMethod.POST, "/usuario/inserir").permitAll()
+					.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/configuration/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/webjars/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
 					.anyRequest().authenticated()
 					.and()
 					.sessionManagement()
@@ -67,7 +72,7 @@ public class SecurityConfigurations {
 	
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/h2-console/**", "/**.scss", "/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
+		return null;
 	}
 	
 	@Bean

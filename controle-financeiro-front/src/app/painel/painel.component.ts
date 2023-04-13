@@ -79,11 +79,11 @@ export class PainelComponent implements OnInit {
       },
       {
         icone: 'trending_down',
-        texto: 'Despesas de ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+        texto: 'Despesas de ' + this.painel?.totalDespesa.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
       },
       {
         icone: 'account_balance',
-        texto: 'Saldo de ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+        texto: 'Saldo de ' + this.painel?.saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
       },
     ];
   }

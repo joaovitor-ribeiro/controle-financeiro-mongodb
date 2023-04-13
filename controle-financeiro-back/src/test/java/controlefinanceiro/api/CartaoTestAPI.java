@@ -31,7 +31,7 @@ public class CartaoTestAPI {
 	
 	@BeforeAll
 	public static void login() {
-		LoginBean usuario = new LoginBean("jaibinho@email.com", "123456");
+		LoginBean usuario = new LoginBean("jaibinho@email.com", "MTIzNDU2");
 		Response response = given()
 								.contentType(ContentType.JSON)
 								.body(usuario).
