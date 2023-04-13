@@ -1,5 +1,9 @@
 package controlefinanceiro.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +40,10 @@ public class LoginController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<TokenBean> autenticar(@RequestBody LoginBean form) {
+	public ResponseEntity<TokenBean> autenticar(@RequestBody LoginBean form) throws UnsupportedEncodingException {
+		byte[] decoded = Base64.getDecoder().decode(form.getSenha().getBytes("UTF-8"));
+		String senha   = new String(decoded, StandardCharsets.UTF_8);
+		form.setSenha(senha);
 		UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);

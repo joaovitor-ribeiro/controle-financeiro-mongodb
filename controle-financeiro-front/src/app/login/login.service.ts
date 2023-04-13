@@ -17,6 +17,7 @@ export class LoginService {
   ) { }
 
   login(loginForm: loginForm) {
+    loginForm.senha = btoa(loginForm?.senha);
     return this.http.post<Token>(this.url, loginForm);
   }
 
