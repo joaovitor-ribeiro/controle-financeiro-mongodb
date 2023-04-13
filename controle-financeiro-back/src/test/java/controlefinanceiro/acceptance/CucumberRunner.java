@@ -1,12 +1,12 @@
 package controlefinanceiro.acceptance;
 
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-
-@RunWith(Cucumber.class) 
-@CucumberOptions(features = "classpath:features")
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("/features")
 public class CucumberRunner {
 
 }

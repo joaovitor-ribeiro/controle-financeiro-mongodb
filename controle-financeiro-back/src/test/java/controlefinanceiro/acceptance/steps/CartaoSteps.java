@@ -1,7 +1,7 @@
 package controlefinanceiro.acceptance.steps;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import controlefinanceiro.acceptance.page.CartaoPage;
 import io.cucumber.java.After;

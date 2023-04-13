@@ -16,8 +16,11 @@
 	
 	<properties>
 		<maven.compiler.version>3.8.1</maven.compiler.version>
-		<cucumber.version>6.2.0</cucumber.version>
+		<cucumber.version>7.11.2</cucumber.version>
 		<java.version>17</java.version>
+		
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
 	</properties>
 	
 	<dependencies>
@@ -46,7 +49,7 @@
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-config</artifactId>
 		</dependency>
-        
+		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -57,18 +60,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
 		</dependency>
 		
 		<dependency>
@@ -92,24 +83,12 @@
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility-proxy</artifactId>
 			<version>3.1.1</version>
 		</dependency>
-		
-		<!-- <dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <scope>test</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-		    <scope>test</scope>
-		</dependency> -->
 		
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
@@ -129,23 +108,33 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-java</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.9.2</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.9.2</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+   		</dependency>
+   		
+    	<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -154,20 +143,58 @@
 	     	<version>31.0.1-jre</version>
 	    </dependency> 
 	    
-	    <dependency>
-		    <groupId>io.github.bonigarcia</groupId>
-		    <artifactId>webdrivermanager</artifactId>
-		    <version>5.0.3</version>
+		<dependency>
+		    <groupId>io.rest-assured</groupId>
+		    <artifactId>rest-assured</artifactId>
+		    <scope>test</scope>
 		    <exclusions>
-		        <exclusion>
-		            <groupId>com.google.guava</groupId>
-		            <artifactId>guava</artifactId>
-		        </exclusion>
-		    </exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
+		<dependency>
+		    <groupId>junit</groupId>
+    		<artifactId>junit</artifactId>
+		    <scope>test</scope>
+		    <exclusions>
+		        <exclusion>
+		            <groupId>org.hamcrest</groupId>
+		            <artifactId>hamcrest</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency> 
+		
+		<dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
 	</dependencies>
-
+		
 	<build>
 		<plugins>
 			<plugin>
@@ -184,16 +211,10 @@
 			</plugin>
 			
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
 			
 		</plugins>
 	</build>
-
 </project>
