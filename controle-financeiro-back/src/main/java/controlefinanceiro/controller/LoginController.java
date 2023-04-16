@@ -23,10 +23,15 @@ import controlefinanceiro.bean.TokenBean;
 import controlefinanceiro.config.security.TokenService;
 import controlefinanceiro.model.Usuario;
 import controlefinanceiro.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/autenticacao")
 @CrossOrigin
+@Tag(name = "Login", description = "Login do controle financeiro")
 public class LoginController {
 	
 	@Autowired
@@ -38,6 +43,9 @@ public class LoginController {
 	@Autowired
 	private UsuarioRepository repository;
 
+	@Operation(summary = "Autenticação")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso") })
 	@PostMapping
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<TokenBean> autenticar(@RequestBody LoginBean form) throws UnsupportedEncodingException {

@@ -22,21 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 import controlefinanceiro.dto.GanhoDTO;
 import controlefinanceiro.model.Ganho;
 import controlefinanceiro.service.GanhoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("ganho")
 @CrossOrigin
+@Tag(name = "Ganho", description = "Controle de ganho")
+@ApiResponse(responseCode = "403", description = "não autorizado")
 public class GanhoController {
 	
 	@Autowired
 	private GanhoService ganhoService;
 	
+	@Operation(summary = "Inserir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir")
 	public void inserir(@RequestBody Ganho ganho) throws Exception {
 		ganhoService.inserir(ganho);
 	}	
-		
+	
+	@Operation(summary = "Listar os ganhos filtados")
+	@ApiResponse(responseCode = "200", description = "operação realizada com sucesso" )
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path= "/listar")
 	public Page<GanhoDTO> listar(
@@ -48,20 +61,29 @@ public class GanhoController {
 		return ganhoService.listar(descricao, categorias, dataInicial, dataFinal, paginacao);
 	}
 	
+	@Operation(summary = "Editar")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.PUT, path= "/editar/{id}")
 	@Transactional
-	@CrossOrigin
 	public void editar(@PathVariable Integer id, @RequestBody Ganho ganhoNovo) throws Exception {
 		ganhoService.editar(id, ganhoNovo);
 	}
 	
+	@Operation(summary = "Excluir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.NO_CONTENT)	
 	@RequestMapping(method = RequestMethod.DELETE, path =  "/excluir/{id}")
 	public void excluir(@PathVariable Integer id) {
 		ganhoService.excluir(id);
 	}
 	
+	@Operation(summary = "Listar um ganho")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
+					content = @Content(schema = @Schema(implementation = GanhoDTO.class))) })	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
 	public GanhoDTO retornarGanhoId(@PathVariable Integer id) {

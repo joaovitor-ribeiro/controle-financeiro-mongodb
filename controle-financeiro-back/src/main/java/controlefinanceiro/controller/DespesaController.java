@@ -22,21 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 import controlefinanceiro.dto.DespesaDTO;
 import controlefinanceiro.model.Despesa;
 import controlefinanceiro.service.DespesaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping ("despesa")
 @CrossOrigin
+@Tag(name = "Despesa", description = "Controle de despesa")
+@ApiResponse(responseCode = "403", description = "não autorizado")
 public class DespesaController {
 	
 	@Autowired
 	private DespesaService despesaService;
 	
+	@Operation(summary = "Inserir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir")	
 	public void inserir(@RequestBody Despesa despesa) throws Exception {
 		despesaService.inserir(despesa);
 	}
 	
+	@Operation(summary = "Listar as despesas filtadas")
+	@ApiResponse(responseCode = "200", description = "operação realizada com sucesso" )
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/listar")
 	public Page<DespesaDTO> listar(
@@ -48,12 +61,19 @@ public class DespesaController {
 		return despesaService.listar(descricao, categorias, dataInicial, dataFinal, paginacao);
 	}
 	
+	@Operation(summary = "Listar uma despesa")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
+					content = @Content(schema = @Schema(implementation = DespesaDTO.class))) })	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
 	public DespesaDTO retornarDespesaId(@PathVariable Integer id) {
 		return despesaService.retornarDespesaId(id);
 	}
 	
+	@Operation(summary = "Editar")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.PUT, path = "/editar/{id}")
 	@Transactional
@@ -62,6 +82,9 @@ public class DespesaController {
 		despesaService.editar(id, despesaNovo);
 	}
 	
+	@Operation(summary = "Excluir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@RequestMapping(method = RequestMethod.DELETE, path = "/excluir/{id}")
 	@Transactional

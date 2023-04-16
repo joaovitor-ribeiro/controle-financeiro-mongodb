@@ -13,15 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import controlefinanceiro.bean.PainelBean;
 import controlefinanceiro.service.PainelService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("painel")
 @CrossOrigin
+@Tag(name = "Painel", description = "Painel do controle financeiro")
+@ApiResponse(responseCode = "403", description = "não autorizado")
 public class PainelController {
 	
 	@Autowired
 	private PainelService painelService;
 	
+	@Operation(summary = "Total", description = "Total do ganho, despesa e o saldo")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
+					content = @Content(schema = @Schema(implementation = PainelBean.class))) })	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET)
 	public PainelBean painelControleFinanceiro(@RequestParam(required = false) String data) throws ParseException {

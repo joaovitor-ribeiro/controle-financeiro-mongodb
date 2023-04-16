@@ -16,34 +16,56 @@ import org.springframework.web.bind.annotation.RestController;
 
 import controlefinanceiro.model.Cartao;
 import controlefinanceiro.service.CartaoService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping ("cartao")
 @CrossOrigin
+@Tag(name = "Cartão", description = "Controle de cartão")
+@ApiResponse(responseCode = "403", description = "não autorizado")
 public class CartaoController {
 	
-	@Autowired //Instância o service
+	@Autowired 
 	private CartaoService cartaoService;
 	
+	@Operation(summary = "Inserir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir")	
-	public void inserir(@RequestBody Cartao cartao) throws Exception { //@RequestBody: Indica que as informações vão vir no corpo da requisição
+	public void inserir(@RequestBody Cartao cartao) throws Exception { 
 		cartaoService.inserir(cartao);
 	}
 	
+	@Operation(summary = "Listar os cartões filtados")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
+					content = @Content(array = @ArraySchema(schema = @Schema(implementation = Cartao.class)))) })	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/listar")
 	public List<Cartao> listar(@RequestParam(required = false) String nome, @RequestParam(required = false) List<String> bandeiras) {
 		return cartaoService.listar(nome, bandeiras);
 	}
 	
+	@Operation(summary = "Listar um cartão")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
+					content = @Content(schema = @Schema(implementation = Cartao.class))) })	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
 	public Cartao retornarCartaoId(@PathVariable Integer id) {
 		return cartaoService.retornarCartaoId(id);
 	}
 	
+	@Operation(summary = "Editar")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.PUT, path = "/editar/{id}")
 	@Transactional
@@ -51,6 +73,9 @@ public class CartaoController {
 		cartaoService.editar(cartaoNovo, id);
 	}
 	
+	@Operation(summary = "Excluir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@RequestMapping(method = RequestMethod.DELETE, path = "/excluir/{id}")
 	@Transactional

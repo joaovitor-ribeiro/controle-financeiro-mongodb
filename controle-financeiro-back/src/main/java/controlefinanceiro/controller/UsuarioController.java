@@ -17,21 +17,34 @@ import org.springframework.web.multipart.MultipartFile;
 
 import controlefinanceiro.model.Usuario;
 import controlefinanceiro.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("usuario")
 @CrossOrigin
+@Tag(name = "Usuário", description = "Controle de usuário")
 public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	@Operation(summary = "Inserir dados")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir")
 	public Integer inserir(@RequestBody Usuario usuario) throws Exception {
 		return usuarioService.inserir(usuario);		
 	}
 	
+	@Operation(summary = "Inserir foto")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir/{id}")
 	@Transactional
@@ -39,12 +52,22 @@ public class UsuarioController {
 		usuarioService.inserirFoto(foto, id);
 	}
 	
+	@Operation(summary = "Listar um usuário")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200", description = "operação realizada com sucesso",
+					content = @Content(schema = @Schema(implementation = Usuario.class))),
+			@ApiResponse(responseCode = "403", description = "não autorizado")})
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
 	public Usuario retornarUsuarioId(@PathVariable Integer id) {
 		return usuarioService.retornarUsuarioId(id);
 	}
 	
+	@Operation(summary = "Editar")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso"),
+			@ApiResponse(responseCode = "403", description = "não autorizado")})
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.PUT, path = "/editar/{id}")
 	@Transactional
@@ -52,6 +75,10 @@ public class UsuarioController {
 		usuarioService.editar(id, usuarioNovo);		
 	}
 	
+	@Operation(summary = "Excluir")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "operação realizada com sucesso"),
+			@ApiResponse(responseCode = "403", description = "não autorizado")})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@RequestMapping(method = RequestMethod.DELETE, path = "/excluir/{id}")
 	@Transactional
