@@ -22,3 +22,26 @@ table {
   min-width: 600px;
   width: 75%;
 }
+
+
+.widthCabecalho {
+  width: 87%;
+  overflow: auto;
+  max-width: 100%;
+  min-width: 600px;
+  @media screen and (max-width: 1650px) {
+    width: 100%;
+  }
+}
+
+
+.widthPaginator {
+  width: 100%;
+}
+
+.widthFiltros {
+  width: 90%;
+  @media screen and (max-width: 1650px) {
+    width: 100%;
+  }
+}

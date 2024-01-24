@@ -4,7 +4,7 @@
 
 <div *ngIf="!carregando" class="dadosCartoes">
   <div class="cabecalho">
-    <div class="titulo">
+    <div class="widthCabecalho">
       <mat-grid-list cols="2" rowHeight="50px">
         <mat-grid-tile>
           <h2 class="titulo">Cartões cadastrados</h2>
@@ -21,7 +21,7 @@
     </div>
 
     <form [formGroup]="filtroFormulario" (ngSubmit)="listar()">
-      <div class="row mt-2 campoFiltro" style="width: 70%;">
+      <div class="row mt-2 campoFiltro widthFiltros" style="width: 70%;">
         <div class="col-md">
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Nome</mat-label>
