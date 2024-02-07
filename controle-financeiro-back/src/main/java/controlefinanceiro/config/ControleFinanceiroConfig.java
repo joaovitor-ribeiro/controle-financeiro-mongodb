@@ -11,14 +11,26 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 public class ControleFinanceiroConfig implements WebMvcConfigurer {
 	
+	private static final String AUTHORIZATION_KEY = "Authorization";
+	
 	@Bean
 	public OpenAPI openApi() {
+		
+		SecurityRequirement securityItem = new SecurityRequirement();
+		securityItem.addList(AUTHORIZATION_KEY);
+		
+		Components components = new Components();
+		components.addSecuritySchemes(AUTHORIZATION_KEY, new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"));
+		
 		return new OpenAPI()
-				.components(new Components())
+				.components(components)
+				.addSecurityItem(securityItem)
 				.info(
 						new Info()
 						.title("Controle Financeiro")
