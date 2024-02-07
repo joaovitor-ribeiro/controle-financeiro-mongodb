@@ -43,7 +43,7 @@ public class CategoriaController {
 		categoriaService.inserir(categoria);
 	}
 	
-	@Operation(summary = "Listar os categorias filtadas")
+	@Operation(summary = "Listar as categorias")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
 					content = @Content(array = @ArraySchema(schema = @Schema(implementation = Categoria.class)))) })	

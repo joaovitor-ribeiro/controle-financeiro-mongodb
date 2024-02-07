@@ -43,7 +43,7 @@ public class CartaoController {
 		cartaoService.inserir(cartao);
 	}
 	
-	@Operation(summary = "Listar os cartões filtados")
+	@Operation(summary = "Listar os cartões")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "operação realizada com sucesso", 
 					content = @Content(array = @ArraySchema(schema = @Schema(implementation = Cartao.class)))) })	

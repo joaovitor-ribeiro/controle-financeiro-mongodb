@@ -48,7 +48,7 @@ public class GanhoController {
 		ganhoService.inserir(ganho);
 	}	
 	
-	@Operation(summary = "Listar os ganhos filtados")
+	@Operation(summary = "Listar os ganhos")
 	@ApiResponse(responseCode = "200", description = "operação realizada com sucesso" )
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path= "/listar")

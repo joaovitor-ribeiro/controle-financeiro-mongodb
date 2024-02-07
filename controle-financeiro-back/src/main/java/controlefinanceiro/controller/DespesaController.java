@@ -48,7 +48,7 @@ public class DespesaController {
 		despesaService.inserir(despesa);
 	}
 	
-	@Operation(summary = "Listar as despesas filtadas")
+	@Operation(summary = "Listar as despesas")
 	@ApiResponse(responseCode = "200", description = "operação realizada com sucesso" )
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/listar")
