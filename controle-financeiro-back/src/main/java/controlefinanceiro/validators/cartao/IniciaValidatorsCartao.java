@@ -1,19 +1,24 @@
 package controlefinanceiro.validators.cartao;
 
-import controlefinanceiro.model.Cartao;
-import controlefinanceiro.validators.cartao.validators.SemErro;
-import controlefinanceiro.validators.cartao.validators.ValidCamposObrigatorios;
-import controlefinanceiro.validators.cartao.validators.ValidNumeroCorrespondenteABandeira;
-import controlefinanceiro.validators.cartao.validators.ValidNumeroValido;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import controlefinanceiro.dto.cartao.CartaoEntrada;
+
+@Component
 public class IniciaValidatorsCartao {
 	
-	public void inicia(Cartao cartao) throws Exception {
-		ValidatorCartao validatorCartao = new ValidCamposObrigatorios(
-							              new ValidNumeroCorrespondenteABandeira(
-						                  new ValidNumeroValido(
-						                  new SemErro())));
-		validatorCartao.verifica(cartao);
+	List<ValidatorCartao> validacoes;
+	
+	@Autowired
+	public IniciaValidatorsCartao(List<ValidatorCartao> validacoes) {
+		this.validacoes = validacoes;
+	}
+	
+	public void inicia(CartaoEntrada entrada) {
+		validacoes.forEach(v -> v.valida(entrada));
 	}
 
 }

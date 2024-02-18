@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { LoginService } from 'src/app/login/login.service';
 
 import { ErrorModalService } from '../error-modal/error-modal.service';
+import { ErrorModel } from '../model/error.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,11 @@ export class InterceptService implements HttpInterceptor {
     });
 
     return next.handle(dupReq).pipe(catchError((error) => {
-
-      if (error?.error?.message === 'Access Denied') {
+      if (Array.isArray(error?.error)) {
+        const stringErro: string = JSON.stringify(error?.error);
+        const erros: ErrorModel[] = JSON.parse(stringErro);
+        this.erroService.showError(erros).subscribe();
+      } else if (error?.error?.message === 'Access Denied') {
         localStorage.removeItem('token');
         localStorage.removeItem('usuario');
 
@@ -39,8 +43,8 @@ export class InterceptService implements HttpInterceptor {
         })
 
       } else {
-        if (error?.error?.message) {
-          this.erroService.showError(error?.error?.message);
+        if (error?.error && typeof error.error == 'string' ) {
+          this.erroService.showError(error?.error);
         } else {
           this.erroService.showError('Falha na conexão!');
         }

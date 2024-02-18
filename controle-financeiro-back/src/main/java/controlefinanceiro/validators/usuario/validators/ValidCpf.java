@@ -1,26 +1,22 @@
 package controlefinanceiro.validators.usuario.validators;
 
-import controlefinanceiro.model.Usuario;
+import org.springframework.stereotype.Component;
+
+import controlefinanceiro.dto.usuario.UsuarioEntrada;
+import controlefinanceiro.exception.ValidationException;
 import controlefinanceiro.validators.usuario.ValidatorUsuario;
 
-public class ValidCpf extends ValidatorUsuario {
-
-	public ValidCpf(ValidatorUsuario proximo) {
-		super(proximo);
-	}
-	
-	@Override
-	public boolean erro(Usuario usuario) throws Exception {
-		return !validarCPF(usuario.getCpf());
-	}
+@Component
+public class ValidCpf implements ValidatorUsuario {
 
 	@Override
-	public void lancaException(Usuario usuario) {
-		throw new RuntimeException("CPF inválido!");
+	public void valida(UsuarioEntrada usuario) {
+		if (!validarCPF(usuario.cpf())) {
+			throw new ValidationException("CPF inválido!");
+		}
 	}
-	
-	
-	private boolean validarCPF(String cpf) {
+
+	private static boolean validarCPF(String cpf) {
 		int soma = 0;
 		int resto;
 		cpf = cpf.replace(" ", "");

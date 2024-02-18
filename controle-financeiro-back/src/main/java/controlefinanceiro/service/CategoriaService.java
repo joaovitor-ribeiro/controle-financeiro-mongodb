@@ -1,73 +1,81 @@
 package controlefinanceiro.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
+import controlefinanceiro.dto.categoria.CategoriaSaida;
 import controlefinanceiro.model.Categoria;
 import controlefinanceiro.repository.CategoriaRepository;
 import controlefinanceiro.validators.categoria.IniciaValidatorsCategoria;
+import jakarta.validation.ValidationException;
 
 @Service
 public class CategoriaService {
 	
-	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private final CategoriaRepository categoriaRepository;
+	private final IniciaValidatorsCategoria validacao;
 	
 	@Autowired
-	private MongoTemplate mongoTemplate;
-	
-	public void inserir(Categoria categoria) throws Exception {
+	public CategoriaService(CategoriaRepository categoriaRepository, IniciaValidatorsCategoria validacao) {
+		super();
+		this.categoriaRepository = categoriaRepository;
+		this.validacao = validacao;
+	}
+
+	public CategoriaSaida inserir(CategoriaEntrada entrada) {
+		// V A L I D A Ç Õ E S
+		validacao.inicia(entrada);
+		
+		// I N S E R T 
 		int id = categoriaRepository.findAll().size() > 0 ? categoriaRepository.maxId() + 1 : 1;
-		categoria.setId(id);
-		new IniciaValidatorsCategoria().inicia(categoria);
-		categoriaRepository.save(categoria);
+		Categoria responsta = categoriaRepository.insert(new Categoria(id, entrada));
+		
+		// S A Í D A  
+		return new CategoriaSaida(responsta);
 	}
 
-	public List<Categoria> listar(String nome, String tipo) {
+	public List<CategoriaSaida> listar(String nome, String tipo) {
+		List<Categoria> categorias = new ArrayList<Categoria>();
+		 
 		if (!(nome == null || nome.isEmpty()) && !(tipo == null || tipo.isEmpty() || tipo.equals("T"))) {
-			return categoriaRepository.findNomeAndTipo(nome, tipo);
+			categorias = categoriaRepository.findNomeAndTipo(nome, tipo);
 		} else if (!(nome == null || nome.isEmpty())) {
-			return categoriaRepository.findByNome(nome);
+			categorias = categoriaRepository.findByNome(nome);
 		} else if (!(tipo == null || tipo.isEmpty() || tipo.equals("T"))) {
-			return categoriaRepository.findByTipo(tipo);
+			categorias = categoriaRepository.findByTipo(tipo);
 		}
-		return categoriaRepository.findAll();
+		
+		categorias = categoriaRepository.findAll();
+		
+		return categorias.stream().map(c -> new CategoriaSaida(c)).toList();
 	}
 
-	public void editar(Categoria categoria, Integer id) throws Exception {	
-		if (categoriaRepository.findById(id).isPresent()) {
-			new IniciaValidatorsCategoria().inicia(categoria);
-			Query query = Query.query(Criteria.where("_id").is(id));
-			Update update = new Update().set("nome", categoria.getNome())
-					.set("tipo", categoria.getTipo());
-			mongoTemplate.updateFirst(query, update, Categoria.class);
-		} else {
-			throw new RuntimeException("Categoria não encontrada!");	
-		}
+	public CategoriaSaida editar(CategoriaEntrada entrada, Integer id) {	
+		// V A L I D A Ç Õ E S
+		Categoria categoria = categoriaRepository.findById(id).orElseThrow(() -> new ValidationException("Categoria não encontrada!"));
+		validacao.inicia(entrada);
+		
+		// S A V E 
+		categoria.setNome(entrada.nome());
+		categoria.setTipo(entrada.tipo());
+		Categoria saida = categoriaRepository.save(categoria);
+		
+		// S A Í D A  
+		return new CategoriaSaida(saida);
 	}
 
 	public void excluir(Integer id) {
-		Optional<Categoria> optionCategoria = categoriaRepository.findById(id);
-		if (optionCategoria.isPresent()) {
-			categoriaRepository.deleteById(id);
-		} else {
-			throw new RuntimeException("Categoria não foi encontrada para exclusão!");
-		}
+		Categoria categoria = categoriaRepository.findById(id).orElseThrow(() -> new ValidationException("Categoria não foi encontrada para exclusão!"));
+		categoriaRepository.delete(categoria);
 	}
 
-	public Categoria retornarCategoriaId(Integer id) {
-		Optional<Categoria> optionCategoria = categoriaRepository.findById(id);
-		if (optionCategoria.isPresent()) {
-			return optionCategoria.get();
-		}
-		throw new RuntimeException("Categoria não encontrada!");
+	public CategoriaSaida retornarCategoriaId(Integer id) {
+		Categoria categoria = categoriaRepository.findById(id).orElseThrow(() -> new ValidationException("Categoria não encontrada!"));
+		return new CategoriaSaida(categoria);
 	}
 
 }

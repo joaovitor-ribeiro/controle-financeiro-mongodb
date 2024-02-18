@@ -1,77 +1,89 @@
 package controlefinanceiro.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import controlefinanceiro.dto.cartao.CartaoEntrada;
+import controlefinanceiro.dto.cartao.CartaoSaida;
 import controlefinanceiro.model.Cartao;
 import controlefinanceiro.repository.CartaoRepository;
 import controlefinanceiro.validators.cartao.IniciaValidatorsCartao;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 
 
 @Service
 public class CartaoService {
 	
-	@Autowired
-	private CartaoRepository cartaoRepository; //Instanciando o Repository
+	private final CartaoRepository cartaoRepository; 
+	
+	private final IniciaValidatorsCartao validator; 
 	
 	@Autowired
-	private MongoTemplate mongoTemplate; //Instanciando o Repository
-	
-	public void inserir (Cartao cartao) throws Exception {
+	public CartaoService(CartaoRepository cartaoRepository, IniciaValidatorsCartao validator) {
+		super();
+		this.cartaoRepository = cartaoRepository;
+		this.validator = validator;
+	}
+
+	public CartaoSaida inserir (@Valid CartaoEntrada entrada) {
+		// V A L I D A Ç Ã O 
+ 		validator.inicia(entrada);
+
+		// I N S E R T 
 		int id = cartaoRepository.findAll().size() > 0 ? cartaoRepository.maxId() + 1 : 1;
-		cartao.setId(id);
-		new IniciaValidatorsCartao().inicia(cartao);
-		cartaoRepository.save(cartao);		
+		Cartao cartao = cartaoRepository.insert(new Cartao(id, entrada));	
+		
+		// S A Í D A  
+		return new CartaoSaida(cartao);
 	}
 
-	public List<Cartao> listar(String nome, List<String> bandeiras) {
+	public List<CartaoSaida> listar(String nome, List<String> bandeiras) {
+		List<Cartao> cartoes = new ArrayList<Cartao>();
+		
 		if(!(nome == null || nome.isEmpty()) && !(bandeiras == null || bandeiras.isEmpty())) {
-			return cartaoRepository.findNomeAndBandeiras(nome, bandeiras);
+			cartoes = cartaoRepository.findNomeAndBandeiras(nome, bandeiras);
 		} else if(!(nome == null || nome.isEmpty())) {
-			return cartaoRepository.findByNome(nome);
+			cartoes = cartaoRepository.findByNome(nome);
 		} else if (!(bandeiras == null || bandeiras.isEmpty())) {
-			return cartaoRepository.findByBandeiras(bandeiras);
+			cartoes = cartaoRepository.findByBandeiras(bandeiras);
 		}
-		return cartaoRepository.findAll();
+		
+		cartoes = cartaoRepository.findAll();
+		
+		return cartoes.stream().map(c -> new CartaoSaida(c)).toList();
 	}
 
-	public Cartao retornarCartaoId(Integer id){	
-		Optional<Cartao> cartao = cartaoRepository.findById(id);
-		if (cartao.isPresent()) {
-			return cartao.get();
-		}
-		throw new RuntimeException("Cartão não encontrado!");	
+	public CartaoSaida retornarCartaoId(Integer id){	
+		Cartao cartao = cartaoRepository.findById(id).orElseThrow(() -> new ValidationException("Cartão não encontrado!"));
+		
+		return new CartaoSaida(cartao);
 	}
-	
 	
 	public void excluir(Integer id){
-		Optional<Cartao> optionalCartao = cartaoRepository.findById(id);
+		Cartao cartao = cartaoRepository.findById(id).orElseThrow(() -> new ValidationException("Cartão não foi encontrado para a exclusão!"));
 		
-		if (optionalCartao.isPresent()) {	
-			cartaoRepository.deleteById(id);
-		} else {
-			throw new RuntimeException("Cartão não foi encontrado para a exclusão!");
-		}
+		cartaoRepository.delete(cartao);
 	}
 	
-	public void editar(Cartao cartao, Integer id) {
-		if (cartaoRepository.findById(id).isPresent()) {
-			Query query = Query.query(Criteria.where("_id").is(id));
-			Update update = new Update().set("nome", cartao.getNome())
-					.set("bandeira", cartao.getBandeira())
-					.set("numero", cartao.getNumero())
-					.set("limite", cartao.getLimite());
-			mongoTemplate.updateFirst(query, update, Cartao.class);		
-		} else {
-			throw new RuntimeException("Cartão não encontrado!");	
-		}
+	public CartaoSaida editar(CartaoEntrada entrada, Integer id) {
+		// V A L I D A Ç Ã O 
+		validator.inicia(entrada);
+		
+		// S A V E
+		Cartao cartao = cartaoRepository.findById(id).orElseThrow(() -> new ValidationException("Cartão não encontrado!"));
+		
+		cartao.setNome(entrada.nome());
+		cartao.setBandeira(entrada.bandeira());
+		cartao.setLimite(entrada.limite());
+		
+		Cartao cartaoSave = cartaoRepository.save(cartao);
+		
+		// S A Í D A  
+		return new CartaoSaida(cartaoSave);
 	}
 
 }

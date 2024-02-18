@@ -1,9 +1,8 @@
 <div class="confirmDialog">
   <div class="modal-content">
     <div class="modal-body">
-      <div>
-        <p class="fonteMsg">{{ msg }}</p>
-      </div>
+      <ng-container *ngIf="exibirTemplate" [ngTemplateOutlet]="multiplosErros"></ng-container>
+      <ng-container *ngIf="!exibirTemplate" [ngTemplateOutlet]="erro"></ng-container>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-primary botaoFooter" data-dismiss="modal" (click)="onClose()">OK</button>
@@ -11,3 +10,27 @@
   </div>
 </div>
 
+<ng-template #multiplosErros>
+  <h1>
+    Formulário inválido!
+  </h1>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Detalhes
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngFor="let item of erros">
+      <span class="d-flex align-items-center">
+        <h4 class="titulo_campo">{{ item.campo?.toUpperCase() }} : </h4>
+        <p class="ml-1"> {{ item.mensagem?.toUpperCase() }}!</p>
+      </span>
+    </div>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #erro>
+  <div>
+    <p class="fonteMsg">{{ msg }}</p>
+  </div>
+</ng-template>

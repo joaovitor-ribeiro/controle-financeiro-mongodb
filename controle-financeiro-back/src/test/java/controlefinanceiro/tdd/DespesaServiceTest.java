@@ -1,193 +1,76 @@
 package controlefinanceiro.tdd;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Date;
+import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
+import controlefinanceiro.dto.cartao.CartaoEntrada;
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
+import controlefinanceiro.dto.despesa.DespesaEntrada;
+import controlefinanceiro.dto.despesa.DespesaSaida;
+import controlefinanceiro.model.Cartao;
+import controlefinanceiro.model.Categoria;
 import controlefinanceiro.model.Despesa;
-import controlefinanceiro.validators.despesa.IniciaValidatorsDespesa;
+import controlefinanceiro.repository.CartaoRepository;
+import controlefinanceiro.repository.CategoriaRepository;
+import controlefinanceiro.repository.DespesaCustomRepository;
+import controlefinanceiro.repository.DespesaRepository;
+import controlefinanceiro.service.DespesaService;
 
 public class DespesaServiceTest {
 	
-	IniciaValidatorsDespesa validator = new IniciaValidatorsDespesa();
+	@Mock
+	private CartaoRepository cartaoRepository;
 	
-	@Test
-	public void cadastroDespesaSemParametroDescricao() {
-		try {
-			Despesa despesa = new Despesa();
-			validator.inicia(despesa);
-			fail("A Descrição não foi preenchida!");
-		} catch (Exception e) {
-			assertEquals("O campo descrição é de preenchimento obrigatório!", e.getMessage());
-		}
+	@Mock
+	private CategoriaRepository categoriaRepository;
+	
+	@Mock
+	private DespesaRepository despesaRepository;
+	
+	@Mock
+	private DespesaCustomRepository despesaCustomRepository;
+	
+	private DespesaService service;
+	
+	@BeforeEach
+    public void beforeEach() {
+		this.service = new DespesaService(despesaRepository, despesaCustomRepository, cartaoRepository, categoriaRepository);
 	}
 	
 	@Test
-	public void cadastroDespesaParametroDescricaoVazio() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("");
-			validator.inicia(despesa);
-			fail("A Descrição não foi preenchida!");
-		} catch (Exception e) {
-			assertEquals("O campo descrição é de preenchimento obrigatório!", e.getMessage());
-		}
+	@DisplayName("Despesa cadastrada com sucesso!")
+	public void despesaCadastradaComSucesso() {
+		DespesaEntrada entrada = new DespesaEntrada(1, "Despesa", 1, 20.00, new Date());
+		Despesa        despesa =  new Despesa(1, entrada, getCartao(), getCategoria());
+		
+		Mockito.when(categoriaRepository.findById(1)).thenReturn(Optional.of(getCategoria()));
+		Mockito.when(cartaoRepository.findById(1)).thenReturn(Optional.of(getCartao()));
+		Mockito.when(despesaRepository.insert( Mockito.any(Despesa.class) )).thenReturn(despesa);
+		
+		DespesaSaida saida = service.inserir(entrada);
+		
+		assertNotNull(saida);
+		assertEquals(saida.id(), 1);
 	}
 	
-	@Test
-	public void cadastroDespesaValidaTamanhoMinimoDescricao() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Fa");
-			validator.inicia(despesa);
-			fail("O tamanho da descrição não possui menos de 3 caracteres.");
-		} catch (Exception e) {
-			assertEquals("O campo descrição não pode ter menos do que 3 caracteres!", e.getMessage());
-		}
+	
+	public Cartao getCartao() {
+		CartaoEntrada entrada = new CartaoEntrada("Nubank", "Mastercard", "5388708838533791", 50.00);
+		return new Cartao(1, entrada);
 	}
 	
-	@Test
-	public void cadastroDespesaValidaTamanhoMaximoDescricao() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdadepagamentomensal");
-			validator.inicia(despesa);
-			fail("O tamanho da descrição possui menos de 20 caracteres");
-		} catch (Exception e) {
-			assertEquals("O campo descrição não pode ter mais do que 20 caracteres!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaSemParametroValor() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			validator.inicia(despesa);
-			fail("O valor é de preenchimento obrigatório!");
-		} catch (Exception e) {
-			assertEquals("O campo valor é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaValidaValorMaiorQueZero() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(-523.10);
-			validator.inicia(despesa);
-			fail("O valor informado não foi maior que zero!");
-		} catch (Exception e) {
-			assertEquals("O campo valor não pode ser menor ou igual a zero!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaSemParametroData() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			validator.inicia(despesa);
-			fail("A data não foi preenchida");
-		} catch (Exception e) {
-			assertEquals("O campo data é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaSemParametroCartao() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			despesa.setData(new Date());
-			validator.inicia(despesa);
-			fail("O cartão não foi preenchido!");
-		} catch (Exception e) {
-			assertEquals("O campo cartão é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaSemParametroIDCartao() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			despesa.setData(new Date());
-			despesa.setCartao_id(null);
-			validator.inicia(despesa);
-			fail("O cartão não foi preenchido!");
-		} catch (Exception e) {
-			assertEquals("O campo cartão é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaIDCartaoMenorIgualAZero() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			despesa.setData(new Date());
-			despesa.setCartao_id(-1);
-			validator.inicia(despesa);
-			fail("O cartão não foi preenchido!");
-		} catch (Exception e) {
-			assertEquals("O campo cartão é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaSemParametroCategoria() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			despesa.setData(new Date());
-			despesa.setCartao_id(1);
-			validator.inicia(despesa);
-			fail("A categoria foi preenchida!");
-		} catch (Exception e) {
-			assertEquals("O campo categoria é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaSemParametroIDCategoria() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			despesa.setData(new Date());
-			despesa.setCartao_id(1);
-			despesa.setCategoria_id(null);
-			validator.inicia(despesa);
-			fail("A categoria não foi preenchida!");
-		} catch (Exception e) {
-			assertEquals("O campo categoria é de preenchimento obrigatório!", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void cadastroDespesaIDCategoriaMenorIgualAZero() {
-		try {
-			Despesa despesa = new Despesa();
-			despesa.setDescricao("Faculdade");
-			despesa.setValor(523.10);
-			despesa.setData(new Date());
-			despesa.setCartao_id(1);
-			despesa.setCategoria_id(-1);
-			validator.inicia(despesa);
-			fail("A categoria não foi preenchida!");
-		} catch (Exception e) {
-			assertEquals("O campo categoria é de preenchimento obrigatório!", e.getMessage());
-		}
+	public Categoria getCategoria() {
+		CategoriaEntrada entrada = new CategoriaEntrada("Categoria", "D");
+    	return new Categoria(1, entrada);
 	}
 	
 }

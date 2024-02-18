@@ -1,6 +1,5 @@
 package controlefinanceiro.repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,24 +12,21 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import controlefinanceiro.dto.DespesaDTO;
-import controlefinanceiro.model.Cartao;
-import controlefinanceiro.model.Categoria;
+import controlefinanceiro.dto.despesa.DespesaSaida;
 import controlefinanceiro.model.Despesa;
 
 @Service
 public class DespesaCustomRepository {
 	
-	@Autowired
 	private MongoTemplate mongoTemplate;
 	
 	@Autowired
-	private CartaoRepository cartaoRepository;
-	
-	@Autowired
-	private CategoriaRepository categoriaRepository;
-	
-	public Page<DespesaDTO> listar(String descricao, List<Integer> categorias, Date dataInicial, Date dataFinal, Pageable paginacao) {
+	public DespesaCustomRepository(MongoTemplate mongoTemplate) {
+		super();
+		this.mongoTemplate = mongoTemplate;
+	}
+
+	public Page<DespesaSaida> listar(String descricao, List<Integer> categorias, Date dataInicial, Date dataFinal, Pageable paginacao) {
 		
 		Query query = new Query();
 		
@@ -50,16 +46,10 @@ public class DespesaCustomRepository {
 			query.addCriteria(Criteria.where("data").lte(dataFinal));
 		}
 
-		List<Despesa> despesas = mongoTemplate.find(query, Despesa.class);
-		List<DespesaDTO> despesasDTO = new ArrayList<DespesaDTO>();
+		List<Despesa> despesas           = mongoTemplate.find(query, Despesa.class);
+		List<DespesaSaida> despesasSadia = despesas.stream().map(d -> new DespesaSaida(d)).toList();
 		
-		for (Despesa despesa : despesas) {
-			Categoria categoria = categoriaRepository.findById(despesa.getCategoria_id()).get();
-			Cartao cartao = cartaoRepository.findById(despesa.getCartao_id()).get();
-			despesasDTO.add(new DespesaDTO(despesa, categoria, cartao));
-		}
-		
-		int size = despesasDTO.size();
+		int size = despesasSadia.size();
 		
 		int toIndex = paginacao.getPageNumber() + paginacao.getPageSize();
 		
@@ -67,24 +57,18 @@ public class DespesaCustomRepository {
 			toIndex = despesas.size();
 		}
 		
-		despesasDTO = despesasDTO.subList(paginacao.getPageNumber(), toIndex);
+		despesasSadia = despesasSadia.subList(paginacao.getPageNumber(), toIndex);
 		
-		Page<DespesaDTO> pageDespesa = new PageImpl<DespesaDTO>( despesasDTO, paginacao, size);
+		Page<DespesaSaida> pageDespesa = new PageImpl<DespesaSaida>( despesasSadia, paginacao, size);
 		
 		return pageDespesa;
 	}
 	
-	public Page<DespesaDTO> findAll(Pageable paginacao) {
-		List<Despesa> despesas = mongoTemplate.findAll(Despesa.class);
-		List<DespesaDTO> despesasDTO = new ArrayList<DespesaDTO>();
+	public Page<DespesaSaida> findAll(Pageable paginacao) {
+		List<Despesa> despesas           = mongoTemplate.findAll(Despesa.class);
+		List<DespesaSaida> despesasSaida = despesas.stream().map(d -> new DespesaSaida(d)).toList();
 		
-		for (Despesa despesa : despesas) {
-			Categoria categoria = categoriaRepository.findById(despesa.getCategoria_id()).get();
-			Cartao cartao = cartaoRepository.findById(despesa.getCartao_id()).get();
-			despesasDTO.add(new DespesaDTO(despesa, categoria, cartao));
-		}
-		
-		int size = despesasDTO.size();
+		int size = despesasSaida.size();
 		
 		int toIndex = paginacao.getPageNumber() + paginacao.getPageSize();
 		
@@ -92,9 +76,9 @@ public class DespesaCustomRepository {
 			toIndex = despesas.size();
 		}
 		
-		despesasDTO = despesasDTO.subList(paginacao.getPageNumber(), toIndex);
+		despesasSaida = despesasSaida.subList(paginacao.getPageNumber(), toIndex);
 		
-		Page<DespesaDTO> pageDespesa = new PageImpl<DespesaDTO>( despesasDTO, paginacao, size);
+		Page<DespesaSaida> pageDespesa = new PageImpl<DespesaSaida>( despesasSaida, paginacao, size);
 		
 		return pageDespesa;
 	}

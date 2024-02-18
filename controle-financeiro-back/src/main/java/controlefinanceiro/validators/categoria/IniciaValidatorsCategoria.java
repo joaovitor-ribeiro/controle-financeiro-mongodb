@@ -1,21 +1,25 @@
 package controlefinanceiro.validators.categoria;
 
-import controlefinanceiro.model.Categoria;
-import controlefinanceiro.validators.categoria.validators.SemErro;
-import controlefinanceiro.validators.categoria.validators.ValidCamposObrigatorios;
-import controlefinanceiro.validators.categoria.validators.ValidTamanhoNome;
-import controlefinanceiro.validators.categoria.validators.ValidTamanhoTipo;
-import controlefinanceiro.validators.categoria.validators.ValidTipoValido;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
+
+@Component
 public class IniciaValidatorsCategoria {
 	
-	public void inicia(Categoria categoria) throws Exception {
-		ValidatorCategoria validatorCategoria = new ValidCamposObrigatorios(
-				                                new ValidTamanhoNome(
-						                        new ValidTamanhoTipo(
-						                        new ValidTipoValido(
-						                        new SemErro()))));
-		validatorCategoria.verifica(categoria);
+	private List<ValidatorCategoria> validacoes;
+	
+	@Autowired
+	public IniciaValidatorsCategoria(List<ValidatorCategoria> validacoes) {
+		super();
+		this.validacoes = validacoes;
+	}
+
+	public void inicia(CategoriaEntrada entrada) {
+		validacoes.forEach(v -> v.valida(entrada));
 	}
 
 }

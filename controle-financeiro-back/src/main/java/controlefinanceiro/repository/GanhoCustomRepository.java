@@ -1,6 +1,5 @@
 package controlefinanceiro.repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,22 +13,21 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import controlefinanceiro.dto.GanhoDTO;
-import controlefinanceiro.model.Categoria;
+import controlefinanceiro.dto.ganho.GanhoSaida;
 import controlefinanceiro.model.Ganho;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Repository
 public class GanhoCustomRepository {
 
-	@Autowired
 	private final MongoTemplate mongoTemplate;
 	
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	public GanhoCustomRepository(MongoTemplate mongoTemplate) {
+		super();
+		this.mongoTemplate = mongoTemplate;
+	}
 	
-	public Page<GanhoDTO> listar(String descricao, List<Integer> categorias, Date dataInicial, Date dataFinal, Pageable paginacao) {
+	public Page<GanhoSaida> listar(String descricao, List<Integer> categorias, Date dataInicial, Date dataFinal, Pageable paginacao) {
 		Query query = new Query();
 		
 		if (!(descricao == null || descricao.isEmpty())) {
@@ -51,12 +49,7 @@ public class GanhoCustomRepository {
 		query.with(Sort.by(Sort.Direction.DESC, "data"));
 		
 		List<Ganho> ganhos = mongoTemplate.find(query, Ganho.class);
-		List<GanhoDTO> ganhosDTO = new ArrayList<GanhoDTO>();
-		
-		for (Ganho despesa : ganhos) {
-			Categoria categoria = categoriaRepository.findById(despesa.getCategoria_id()).get();
-			ganhosDTO.add(new GanhoDTO(despesa, categoria));
-		}
+		List<GanhoSaida> ganhosDTO = ganhos.stream().map(g -> new GanhoSaida(g)).toList();
 		
 		int size = ganhosDTO.size();
 		
@@ -68,20 +61,15 @@ public class GanhoCustomRepository {
 		
 		ganhosDTO = ganhosDTO.subList(paginacao.getPageNumber(), toIndex);
 		
-		Page<GanhoDTO> pageGanho = new PageImpl<GanhoDTO>( ganhosDTO, paginacao, size);
+		Page<GanhoSaida> pageGanho = new PageImpl<GanhoSaida>( ganhosDTO, paginacao, size);
 		
 		return pageGanho;
 	}
 	
 	
-	public Page<GanhoDTO> findAll(Pageable paginacao) {
+	public Page<GanhoSaida> findAll(Pageable paginacao) {
 		List<Ganho> ganhos = mongoTemplate.findAll(Ganho.class);
-		List<GanhoDTO> ganhosDTO = new ArrayList<GanhoDTO>();
-		
-		for (Ganho despesa : ganhos) {
-			Categoria categoria = categoriaRepository.findById(despesa.getCategoria_id()).get();
-			ganhosDTO.add(new GanhoDTO(despesa, categoria));
-		}
+		List<GanhoSaida> ganhosDTO = ganhos.stream().map(g -> new GanhoSaida(g)).toList();
 		
 		int size = ganhosDTO.size();
 		
@@ -93,9 +81,10 @@ public class GanhoCustomRepository {
 		
 		ganhosDTO = ganhosDTO.subList(paginacao.getPageNumber(), toIndex);
 		
-		Page<GanhoDTO> pageGanho = new PageImpl<GanhoDTO>( ganhosDTO, paginacao, size);
+		Page<GanhoSaida> pageGanho = new PageImpl<GanhoSaida>( ganhosDTO, paginacao, size);
 		
 		return pageGanho;
 	}
-	
+
+
 }

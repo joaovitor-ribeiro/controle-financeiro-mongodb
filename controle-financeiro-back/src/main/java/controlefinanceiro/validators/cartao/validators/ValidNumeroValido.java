@@ -1,24 +1,21 @@
 package controlefinanceiro.validators.cartao.validators;
 
-import controlefinanceiro.model.Cartao;
+import org.springframework.stereotype.Component;
+
+import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.validators.cartao.ValidatorCartao;
+import jakarta.validation.ValidationException;
 
-public class ValidNumeroValido extends ValidatorCartao {
-	
-	public ValidNumeroValido(ValidatorCartao proximo) {
-		super(proximo);
-	}
+@Component
+public class ValidNumeroValido implements ValidatorCartao {
 	
 	@Override
-	public boolean erro(Cartao cartao) {
-		return cartao.getNumero().length() < 13 || cartao.getNumero().length() > 16 || !validarNumeroCartao(cartao.getNumero());
+	public void valida(CartaoEntrada cartao) {
+		if (!validarNumeroCartao(cartao.numero())) {
+			throw new ValidationException("Número de cartão inválido!");
+		}
+		
 	}
-
-	@Override
-	public void lancaException(Cartao cartao) {
-		throw new RuntimeException("Número de cartão inválido!");
-	}
-	
 	
 	private boolean validarNumeroCartao(String numero) {
 		int total = 0;

@@ -36,7 +36,7 @@ public class ValidUtils {
 		}
 	}
 	
-	public boolean validStringEmpty(String campo) {
+	public static boolean isEmpty(String campo) {
 		if (campo == null || campo.isEmpty() ) {
 			return true;
 		} 

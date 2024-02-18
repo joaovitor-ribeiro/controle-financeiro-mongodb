@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import controlefinanceiro.model.Ganho;
 
-public interface GanhoRepository extends MongoRepository<Ganho, Integer> {
+public interface GanhoRepository extends MongoRepository<Ganho, Integer>, RepositoryControleFinanceiro {
 	
 	@Query(value = "{categoria_id: $0")
 	Optional<Ganho> findGanhoByIdCategoria(Integer categoria);
@@ -22,4 +22,5 @@ public interface GanhoRepository extends MongoRepository<Ganho, Integer> {
 	
 	@Aggregation(pipeline = { "{ $group : { _id : null, maximo : { $max : \"$_id\" } } }" })
 	Integer maxId();
+	
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import controlefinanceiro.dto.ganho.GanhoEntrada;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -25,9 +26,17 @@ public class Ganho {
 	
 	private String descricao;
 	
-	private Integer categoria_id;
+	private Categoria categoria;
 	
 	private Double valor;
 	
 	private Date data;
+	
+	public Ganho(int id, GanhoEntrada entrada, Categoria categoria) {
+		this.id = id;
+		this.descricao = entrada.descricao();
+		this.categoria = categoria;
+		this.valor = entrada.valor();
+		this.data = entrada.data();
+	}
 }

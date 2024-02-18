@@ -1,22 +1,19 @@
 package controlefinanceiro.validators.categoria.validators;
 
-import controlefinanceiro.model.Categoria;
+import org.springframework.stereotype.Component;
+
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.validators.categoria.ValidatorCategoria;
+import jakarta.validation.ValidationException;
 
-public class ValidTipoValido extends ValidatorCategoria {
+@Component
+public class ValidTipoValido implements ValidatorCategoria {
 	
-	public ValidTipoValido(ValidatorCategoria proximo) {
-		super(proximo);
-	}
-
 	@Override
-	public boolean erro(Categoria categoria) throws Exception {
-		return !categoria.getTipo().equals("G") && !categoria.getTipo().equals("D");
-	}
-
-	@Override
-	public void lancaException(Categoria categoria) {
-		throw new RuntimeException("Informe G para ganho ou D para despesa!");
+	public void valida(CategoriaEntrada categoria) {
+		if ( !(categoria.tipo().equals("G") || categoria.tipo().equals("D")) ) {
+			throw new ValidationException("O tipo tem que ter um caracter. Informe G para ganho ou D para despesa!");
+		}
 	}
 
 }

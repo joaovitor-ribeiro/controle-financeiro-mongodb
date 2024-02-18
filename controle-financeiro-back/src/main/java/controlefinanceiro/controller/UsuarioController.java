@@ -1,9 +1,12 @@
 package controlefinanceiro.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import controlefinanceiro.dto.usuario.UsuarioEntrada;
+import controlefinanceiro.dto.usuario.UsuarioSaida;
 import controlefinanceiro.model.Usuario;
 import controlefinanceiro.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +28,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("usuario")
@@ -38,8 +44,11 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "201", description = "operação realizada com sucesso") })
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir")
-	public Integer inserir(@RequestBody Usuario usuario) throws Exception {
-		return usuarioService.inserir(usuario);		
+	public ResponseEntity<UsuarioSaida> inserir(@RequestBody @Valid UsuarioEntrada entrada) throws URISyntaxException {
+		
+		UsuarioSaida usuario = usuarioService.inserir(entrada);		
+		
+		return ResponseEntity.created(new URI( String.valueOf(usuario.id()) )).body(usuario);
 	}
 	
 	@Operation(summary = "Inserir foto")
@@ -48,8 +57,11 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, path = "/inserir/{id}")
 	@Transactional
-	public void inserirFoto(@RequestParam("file") MultipartFile foto, @PathVariable Integer id) throws IOException {
-		usuarioService.inserirFoto(foto, id);
+	public ResponseEntity<UsuarioSaida> inserirFoto(@RequestParam("file") MultipartFile foto, @PathVariable Integer id) throws IOException {
+		
+		UsuarioSaida usuario = usuarioService.inserirFoto(foto, id);
+		
+		return ResponseEntity.ok(usuario);
 	}
 	
 	@Operation(summary = "Listar um usuário")
@@ -60,8 +72,11 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "403", description = "não autorizado")})
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
-	public Usuario retornarUsuarioId(@PathVariable Integer id) {
-		return usuarioService.retornarUsuarioId(id);
+	public ResponseEntity<UsuarioSaida> retornarUsuarioId(@PathVariable Integer id) {
+		
+		UsuarioSaida usuario = usuarioService.retornarUsuarioId(id);
+		
+		return ResponseEntity.ok(usuario);
 	}
 	
 	@Operation(summary = "Editar")
@@ -71,8 +86,11 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.PUT, path = "/editar/{id}")
 	@Transactional
-	public void editar(@PathVariable Integer id, @RequestBody Usuario usuarioNovo) throws Exception {
-		usuarioService.editar(id, usuarioNovo);		
+	public ResponseEntity<UsuarioSaida> editar(@PathVariable Integer id, @RequestBody @Valid UsuarioEntrada usuarioNovo) {
+		
+		UsuarioSaida usuario = usuarioService.editar(id, usuarioNovo);		
+		
+		return ResponseEntity.ok(usuario);
 	}
 	
 	@Operation(summary = "Excluir")
@@ -82,8 +100,10 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@RequestMapping(method = RequestMethod.DELETE, path = "/excluir/{id}")
 	@Transactional
-	public void excluir(@PathVariable Integer id) {
+	public ResponseEntity<Void> excluir(@PathVariable Integer id) {
 		usuarioService.excluir(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 }

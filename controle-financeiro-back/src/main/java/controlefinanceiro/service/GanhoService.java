@@ -2,82 +2,78 @@ package controlefinanceiro.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import controlefinanceiro.dto.GanhoDTO;
+import controlefinanceiro.dto.ganho.GanhoEntrada;
+import controlefinanceiro.dto.ganho.GanhoSaida;
+import controlefinanceiro.exception.ValidationException;
 import controlefinanceiro.model.Categoria;
 import controlefinanceiro.model.Ganho;
 import controlefinanceiro.repository.CategoriaRepository;
 import controlefinanceiro.repository.GanhoCustomRepository;
 import controlefinanceiro.repository.GanhoRepository;
-import controlefinanceiro.validators.ganho.IniciaValidatorsGanho;
+import controlefinanceiro.utils.Identification;
 
 @Service
 public class GanhoService {
 
-	@Autowired
-	private GanhoRepository ganhoRepository;
+	private final GanhoRepository ganhoRepository;
+	
+	private final GanhoCustomRepository ganhoCustomRepository;
+	
+	private final CategoriaRepository categoriaRepository;
 	
 	@Autowired
-	private GanhoCustomRepository ganhoCustomRepository;
-	
-	@Autowired
-	private MongoTemplate mongoTemplate;
-	
-	@Autowired
-	private CategoriaRepository categoriaRepository;
-	
-	public void inserir(Ganho ganho) throws Exception {		
-		int id = ganhoRepository.findAll().size() > 0 ? ganhoRepository.maxId() + 1 : 1;
-		ganho.setId(id);
-		new IniciaValidatorsGanho().inicia(ganho);
-		ganhoRepository.save(ganho);
+	public GanhoService(GanhoRepository ganhoRepository, 
+						GanhoCustomRepository ganhoCustomRepository,
+						CategoriaRepository categoriaRepository) {
+		super();
+		this.ganhoRepository       = ganhoRepository;
+		this.ganhoCustomRepository = ganhoCustomRepository;
+		this.categoriaRepository   = categoriaRepository;
 	}
 
-	public void editar(Integer id, Ganho ganho) throws Exception {
-		new IniciaValidatorsGanho().inicia(ganho);
-		if (ganhoRepository.findById(id).isPresent()) {
-			Query query = new Query().addCriteria(Criteria.where("_id").is(id));
-			Update update = new Update().set("categoria_id", ganho.getCategoria_id())
-										.set("data", ganho.getData())
-										.set("descricao", ganho.getDescricao())
-										.set("valor", ganho.getValor());
-			mongoTemplate.updateFirst(query, update, Ganho.class);
-		}else {
-			throw new RuntimeException("Ganho não foi encontrado para edição!");
-		}
+	public GanhoSaida inserir(GanhoEntrada entrada) {		
+		// I N S E R T
+		Categoria categoria = categoriaRepository.findById(entrada.categoria_id()).orElseThrow(() -> new ValidationException("Categoria não encontrada!"));
+		Integer id          = Identification.getId(ganhoRepository);
+		Ganho ganho         = ganhoRepository.insert(new Ganho(id, entrada, categoria));
+		
+		// S A Í D A
+		return new GanhoSaida(ganho);
+	}
+
+	public GanhoSaida editar(Integer id, GanhoEntrada ganhoNovo) {
+		// S A V E 
+		Ganho ganho         = ganhoRepository.findById(id).orElseThrow(() -> new ValidationException("Ganho não foi encontrado para edição!"));
+		Categoria categoria = categoriaRepository.findById(ganhoNovo.categoria_id()).orElseThrow(() -> new ValidationException("Categoria não encontrada!"));
+		
+		ganho.setDescricao(ganhoNovo.descricao());
+		ganho.setCategoria(categoria);
+		ganho.setValor(ganhoNovo.valor());
+		ganho.setData(ganhoNovo.data());
+		
+		Ganho ganhoSalvo = ganhoRepository.save(ganho);
+		
+		// S A Í D A
+		return new GanhoSaida(ganhoSalvo);
 	}
 
 	public void excluir(Integer id) {
-		Optional<Ganho> optionGanho = ganhoRepository.findById(id);
-		if (optionGanho.isPresent()) {
-			ganhoRepository.deleteById(id);
-		} else {
-			throw new RuntimeException("Ganho não foi encontrado para exclusão!");
-		}
+		Ganho ganho = ganhoRepository.findById(id).orElseThrow(() -> new ValidationException("Ganho não foi encontrado para exclusão!"));
+		ganhoRepository.delete(ganho);
 	}
 
-	public GanhoDTO retornarGanhoId(Integer id) {
-		Optional<Ganho> optionGanho = ganhoRepository.findById(id);
-		if (optionGanho.isPresent()) {
-			Ganho ganho = optionGanho.get();
-			Categoria categoria = categoriaRepository.findById(ganho.getCategoria_id()).get();
-			return new GanhoDTO(ganho, categoria);
-			
-		}
-		throw new RuntimeException("Ganho não encontrado!");
+	public GanhoSaida retornarGanhoId(Integer id) {
+		Ganho ganho = ganhoRepository.findById(id).orElseThrow(() -> new ValidationException("Ganho não encontrado!"));
+		return new GanhoSaida(ganho);
 	}
 	
-	public Page<GanhoDTO> listar(String descricao, List<Integer> categorias, Date dataInicial, Date dataFinal, Pageable paginacao) {
+	public Page<GanhoSaida> listar(String descricao, List<Integer> categorias, Date dataInicial, Date dataFinal, Pageable paginacao) {
 		if ( (descricao == null || descricao.isEmpty()) && (categorias == null || categorias.isEmpty()) && dataInicial == null && dataFinal == null )  {
 			return ganhoCustomRepository.findAll(paginacao);
 		}

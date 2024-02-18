@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import controlefinanceiro.model.Despesa;
 
-public interface DespesaRepository extends MongoRepository<Despesa, Integer>{
+public interface DespesaRepository extends MongoRepository<Despesa, Integer>, RepositoryControleFinanceiro{
 	
 	@Query( " {categoria_id: ?0} ")
 	Optional<Despesa> findDespesaByIdCategoria(Integer categoria);
@@ -22,8 +22,5 @@ public interface DespesaRepository extends MongoRepository<Despesa, Integer>{
 		    "{ $group : { _id : null, total : { $sum : \"$valor\" } } }"
 	})
 	Double getTotalValor(Date data);
-	
-	@Aggregation(pipeline = { "{ $group : { _id : null, maximo : { $max : \"$_id\" } } }" })
-	Integer maxId();
 	
 }

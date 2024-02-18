@@ -1,25 +1,25 @@
 package controlefinanceiro.validators.usuario;
 
-import controlefinanceiro.model.Usuario;
-import controlefinanceiro.validators.usuario.validators.SemErro;
-import controlefinanceiro.validators.usuario.validators.ValidCamposObrigatorios;
-import controlefinanceiro.validators.usuario.validators.ValidCpf;
-import controlefinanceiro.validators.usuario.validators.ValidEmail;
-import controlefinanceiro.validators.usuario.validators.ValidEmailValido;
-import controlefinanceiro.validators.usuario.validators.ValidTamanhoNome;
-import controlefinanceiro.validators.usuario.validators.ValidTamanhoSenha;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import controlefinanceiro.dto.usuario.UsuarioEntrada;
+
+@Component
 public class IniciaValidatorsUsuario {
 	
-	public void inicia(Usuario usuario) throws Exception {
-		ValidatorUsuario validatorUsuario = new ValidCamposObrigatorios(
-						                    new ValidTamanhoNome(
-						                    new ValidCpf(
-						                   	new ValidEmail(
-						                    new ValidEmailValido(
-						                    new ValidTamanhoSenha(
-						                    new SemErro()))))));
-		validatorUsuario.verifica(usuario);
+	private List<ValidatorUsuario> validator;
+	
+	@Autowired
+	public IniciaValidatorsUsuario(List<ValidatorUsuario> validator) {
+		super();
+		this.validator = validator;
+	}
+
+	public void inicia(UsuarioEntrada usuario) {
+		validator.forEach(v -> v.valida(usuario));
 	}
 
 }

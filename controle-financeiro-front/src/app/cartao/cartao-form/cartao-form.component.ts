@@ -82,7 +82,6 @@ export class CartaoFormComponent implements OnInit, AfterContentChecked {
   }
 
   enviarFormulario() {
-    console.log(this.cartaoFormulario.get('limite')?.value);
     if (this.cartaoFormulario.invalid) {
       this.cartaoFormulario.markAllAsTouched();
     }else{

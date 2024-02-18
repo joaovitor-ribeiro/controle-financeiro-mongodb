@@ -1,24 +1,9 @@
 package controlefinanceiro.validators.categoria;
 
-import controlefinanceiro.model.Categoria;
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
 
-public abstract class ValidatorCategoria {
-
-	private ValidatorCategoria proximo;
+public interface ValidatorCategoria {
 	
-	public ValidatorCategoria(ValidatorCategoria proximo) {
-		this.proximo = proximo;
-	}
-	
-	public void verifica(Categoria categoria) throws Exception {
-		if (erro(categoria)) {
-			lancaException(categoria);
-			return;
-		}
-		proximo.verifica(categoria);
-	}
-	
-	public abstract boolean erro(Categoria categoria) throws Exception;
-	public abstract void lancaException(Categoria categoria);
+	public void valida(CategoriaEntrada categoria);
 	
 }

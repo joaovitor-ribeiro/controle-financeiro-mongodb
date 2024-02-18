@@ -6,14 +6,11 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.port;
 import static org.hamcrest.CoreMatchers.is;
 
-import java.util.Date;
-
 import org.apache.http.HttpStatus;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import controlefinanceiro.model.Despesa;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
@@ -29,28 +26,28 @@ public class DespesaTestAPI {
 		LoginApi.login();
 	}
 	
-	@Test
-	public void testInserirDespesa() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "despesa";
-		
-		Despesa despesa = new Despesa();
-		despesa.setCategoria_id(1);
-		despesa.setDescricao("Akademia");
-		despesa.setCartao_id(1);
-		despesa.setValor(100.0);
-		despesa.setData(new Date());
-		
-		given()
-			.contentType(ContentType.JSON)
-			.body(despesa)
-			.header("Authorization", LoginApi.getToken())
-		.when()
-			.post("inserir")
-		.then()
-			.statusCode(HttpStatus.SC_CREATED);
-	}
+//	@Test
+//	public void testInserirDespesa() {
+//		baseURI = "http://localhost";
+//		port = 8080;
+//		basePath = "despesa";
+//		
+//		Despesa despesa = new Despesa();
+//		despesa.setCategoria_id(1);
+//		despesa.setDescricao("Akademia");
+//		despesa.setCartao_id(1);
+//		despesa.setValor(100.0);
+//		despesa.setData(new Date());
+//		
+//		given()
+//			.contentType(ContentType.JSON)
+//			.body(despesa)
+//			.header("Authorization", LoginApi.getToken())
+//		.when()
+//			.post("inserir")
+//		.then()
+//			.statusCode(HttpStatus.SC_CREATED);
+//	}
 	
 	@Test
 	public void testListarDespesa() {

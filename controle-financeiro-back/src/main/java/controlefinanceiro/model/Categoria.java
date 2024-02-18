@@ -3,7 +3,7 @@ package controlefinanceiro.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import lombok.Setter;
 @Document
 @Getter
 @Setter
-@AllArgsConstructor 
 @NoArgsConstructor 
 public class Categoria {
 	
@@ -23,4 +22,14 @@ public class Categoria {
 	private String nome;
 	
 	private String tipo;
+
+	public Categoria(Integer id, CategoriaEntrada entrada) {
+		super();
+		this.id = id;
+		this.nome = entrada.nome();
+		this.tipo = entrada.tipo();
+	}
+	
+	
+	
 }

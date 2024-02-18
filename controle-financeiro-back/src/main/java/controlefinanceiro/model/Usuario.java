@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import controlefinanceiro.dto.usuario.UsuarioEntrada;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -104,6 +105,14 @@ public class Usuario implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public Usuario(int id, UsuarioEntrada entrada, String senha) {
+		this.id = id;
+		this.nome = entrada.nome();
+		this.cpf = entrada.cpf();
+		this.email = entrada.email();
+		this.senha = senha;
 	}
 
 

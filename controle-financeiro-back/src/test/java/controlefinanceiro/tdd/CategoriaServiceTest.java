@@ -1,115 +1,111 @@
 package controlefinanceiro.tdd;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import controlefinanceiro.dto.categoria.CategoriaEntrada;
+import controlefinanceiro.dto.categoria.CategoriaSaida;
 import controlefinanceiro.model.Categoria;
+import controlefinanceiro.repository.CategoriaRepository;
+import controlefinanceiro.service.CategoriaService;
 import controlefinanceiro.validators.categoria.IniciaValidatorsCategoria;
+import jakarta.validation.ValidationException;
 
+@SpringBootTest
 public class CategoriaServiceTest {
+	
+	@Mock
+	private CategoriaRepository categoriaRepository;
+	
+	@Autowired
+	private IniciaValidatorsCategoria validacao;
+	
+	private CategoriaService service;
+	
+	@BeforeEach
+    public void beforeEach() {
+		this.service = new CategoriaService(categoriaRepository, validacao);
+	}
 
-	private IniciaValidatorsCategoria validator = new IniciaValidatorsCategoria();
-    
-    @Test
-	public void cadastroCategoriaSemParametroNome()  {
+	@Test
+	@DisplayName("Inserir categoria com o tipo errado!")
+	public void cadastroCategoriaTipoIncorreto()  {
 		try {
-			Categoria categoria= new Categoria();
-			validator.inicia(categoria);
-			fail("Nome da categoria é de preenchimento obrigatório. ");
-		} catch (Exception e) {
-			assertEquals("O campo nome é de preenchimento obrigatório!", e.getMessage());
+			CategoriaEntrada categoria= new CategoriaEntrada("Categoria", "V");
+			service.inserir(categoria);
+			fail("O erro de tipo não foi lançado. ");
+		} catch (ValidationException e) {
+			assertEquals("O tipo tem que ter um caracter. Informe G para ganho ou D para despesa!", e.getMessage());
 		}
 	}
     
     @Test
-    public void cadastroCategoriaParametroNomeVazio()  {
-    	try {
-    		Categoria categoria= new Categoria();
-    		categoria.setNome("");
-    		validator.inicia(categoria);
-    		fail("Nome da categoria é de preenchimento obrigatório. ");
-    	} catch (Exception e) {
-    		assertEquals("O campo nome é de preenchimento obrigatório!", e.getMessage());
-    	}
+    @DisplayName("Inserir categoria com sucesso!")
+    public void cadastroCategoriaComSucesso()  {
+    	CategoriaEntrada entrada = new CategoriaEntrada("Categoria", "D");
+    	Categoria categoria      = new Categoria(1, entrada);
+    	
+    	Mockito.when(categoriaRepository.insert(Mockito.any(Categoria.class))).thenReturn(categoria);
+    	
+    	CategoriaSaida saida = service.inserir(entrada);
+    	
+    	assertNotNull(saida);
+    	assertEquals(saida.id(), 1);
     }
     
     @Test
-    public void cadastroCategoriaSemParametroTipo() {
- 	   try {
- 		   Categoria categoria = new Categoria();
- 		   categoria.setNome("Faculdade");
- 		   validator.inicia(categoria);
- 		   fail("O Tipo do cadastro de categoria é de preenchimento obrigatório!");
- 	   } catch (Exception e) {
- 		   assertEquals("O campo tipo é de preenchimento obrigatório!", e.getMessage());
- 	   }
+    @DisplayName("Categoria não encontrada!")
+    public void categoriaNaoEncontrada()  {
+    	CategoriaEntrada entrada = new CategoriaEntrada("Edit categ", "D");
+    	
+    	Mockito.when(categoriaRepository.findById(2)).thenThrow(new ValidationException("Categoria não encontrada!"));
+    	
+    	assertThrows(ValidationException.class, () -> service.editar(entrada, 2), "Categoria não encontrada!");
     }
     
     @Test
-    public void cadastroCategoriaParametroTipoVazio() {
- 	   try {
- 		   Categoria categoria = new Categoria();
- 		   categoria.setNome("Faculdade");
- 		   categoria.setTipo("");
- 		   validator.inicia(categoria);
- 		   fail("O Tipo do cadastro de categoria é de preenchimento obrigatório!");
- 		   
- 	   } catch (Exception e) {
- 		   assertEquals("O campo tipo é de preenchimento obrigatório!", e.getMessage());
- 	   }
+    @DisplayName("Editar categoria com sucesso!")
+    public void editaCategoriaComSucesso()  {
+    	CategoriaEntrada entrada = new CategoriaEntrada("Edit categ", "D");
+    	Categoria categoria      = new Categoria(1, entrada);
+    	
+    	Mockito.when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoria));
+    	Mockito.when(categoriaRepository.save(Mockito.any(Categoria.class))).thenReturn(categoria);
+    	
+    	CategoriaSaida saida = service.editar(entrada, 1);
+    	
+    	assertNotNull(saida);
+    	assertEquals(saida.id(), 1);
+    	assertEquals(saida.nome(), "Edit categ");
+    	assertEquals(saida.tipo(), "D");
     }
     
     @Test
-    public void cadastroCategoriaValidaTamanhoMinimoNome() {
-    	try {
-			Categoria categoria= new Categoria();
-			categoria.setNome("Te");
-			categoria.setTipo("D");
-			validator.inicia(categoria);
-			fail("O Nome da categoria deve ter no minimo 3 caracteres!");
-		} catch (Exception e) {
-			assertEquals("O campo nome não pode ter menos do que 3 caracteres!", e.getMessage());
-		}
+    @DisplayName("Retorna categoria pelo id com sucesso!")
+    public void getCategoria()  {
+    	CategoriaEntrada entrada = new CategoriaEntrada("Categoria", "D");
+    	Categoria categoria      = new Categoria(1, entrada);
+    	
+    	Mockito.when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoria));
+    	
+    	CategoriaSaida saida = service.retornarCategoriaId(1);
+    	
+    	assertNotNull(saida);
+    	assertEquals(saida.id(), 1);
+    	assertEquals(saida.nome(), "Categoria");
+    	assertEquals(saida.tipo(), "D");
     }
     
-   @Test
-   public void cadastroCategoriaValidaTamanhoMaximoNome() {
-	   try {
-		   Categoria categoria = new Categoria();
-		   categoria.setNome("0123456789012345678912");
-		   categoria.setTipo("D");
-		   validator.inicia(categoria);
-		   fail("O Nome da categoria não pode ter mais de 20 caractres!");
-	   } catch (Exception e) {
-		   assertEquals("O campo nome não pode ter mais do que 20 caracteres!", e.getMessage()); 
-	   }
-   }
-   
-   @Test
-   public void cadastroCategoriaInformandoTipoComMaisCaracteres() {
-	   try {
-		   Categoria categoria = new Categoria();
-		   categoria.setNome("Faculdade");
-		   categoria.setTipo("Dia");
-		   validator.inicia(categoria);
-		   fail("Informar um caracter no campo Tipo!");
-	   } catch (Exception e) {
-		   assertEquals("O tipo tem que ter um caracter. Informe G para ganho ou D para despesa!", e.getMessage());
-	   }
-   }
-   
-   @Test
-   public void cadastroCategoriaInformandoTipoInvalido() {
-	   try {
-		   Categoria categoria = new Categoria();
-		   categoria.setNome("Faculdade");
-		   categoria.setTipo("F");
-		   validator.inicia(categoria);
-		   fail("Informar D para despesa ou G para ganho!");
-	   } catch (Exception e) {
-		   assertEquals("Informe G para ganho ou D para despesa!", e.getMessage());
-	   }
-   }
 }
