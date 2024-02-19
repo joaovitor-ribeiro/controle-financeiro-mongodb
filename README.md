@@ -1,7 +1,21 @@
 
 # Controle financeiro 
 
-Projeto de estudo em MongoDB e diversos tipos de testes
+Projeto de controle financeiro pessoal.
+
+## Tecnologia
+
+Java 
+
+Spring boot 
+
+MongoDB
+
+Angular
+
+Cypress
+
+Selenium
 
 ## Pré requistos 
 
@@ -10,9 +24,13 @@ Conter o Angular CLI. Obter executando o comando
 ```bash
   npm i -g @angular/cli
 ```
-Conter o Node.js. Obter o Node.js no site https://nodejs.org/en
+Conter o Node.js. Obter o Node.js no site: https://nodejs.org/en
 
-Conter o MongoDB instalado. Obter o MongoDB no site https://www.mongodb.com/
+Conter o MongoDB instalado. Obter o MongoDB no site: https://www.mongodb.com/
+
+Conter uma IDE de sua preferência.
+
+Conter o Lombok de acordo com sua IDE. Obeter através do site: https://projectlombok.org/
 
 ## Instalação
 
@@ -28,7 +46,9 @@ Abrir o cmd e navegar até a pasta controle-financeiro-front, executar o comando
     npm install
 ```
 
-Importar o controle-financeiro-back como projeto maven na IDE de sua preferência
+Importar o controle-financeiro-back como projeto maven na IDE de sua preferência.
+
+Executar o maven update.
 
 ## Rodando os testes
 
