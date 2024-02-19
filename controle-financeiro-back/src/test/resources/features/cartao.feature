@@ -21,7 +21,7 @@ Funcionalidade: Cadastro de cartão
 
 	| nome      | bandeira         | numero           | limite |
 	| Bradesco  | Visa             | 4539063642617856 | 1200   |
-	| Nubank    | Mastercard       | 5481132071163156 | 1300   |
+	| Nubank    | Mastercard       | 5173863405996183 | 1300   |
 	| Centurion | American Express | 347099436377810  | 1500   |
 	| Caixa     | JCB              | 3596788135012213 | 1700   |
 	| ELO       | Diners Club      | 30289539153372   | 1900   |

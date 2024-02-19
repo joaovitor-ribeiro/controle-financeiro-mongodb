@@ -20,8 +20,8 @@ Funcionalidade: Cadastro de categoria
 	Exemplos:
 	
 	| nome                 | tipo | 
-	| Salário              | G    | 
-	| Cartão de crédito    | D    | 
+	| Aula                 | G    | 
+	| Faculdade            | D    | 
 	
 	@categoria-cadastro-validacoes-mensagens
 	Esquema do Cenario: Validação da mensagem "<mensagem>"
