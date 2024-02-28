@@ -18,6 +18,7 @@ import controlefinanceiro.repository.CartaoRepository;
 import controlefinanceiro.repository.CategoriaRepository;
 import controlefinanceiro.repository.DespesaCustomRepository;
 import controlefinanceiro.repository.DespesaRepository;
+import controlefinanceiro.utils.Identification;
 
 @Service
 public class DespesaService {
@@ -48,7 +49,7 @@ public class DespesaService {
 		// I N S E R T 
 		Cartao cartao       = cartaoRepository.findById(entrada.cartao_id()).orElseThrow(() -> new ValidationException("Cartão não encontrado!"));
 		Categoria categoria = categoriaRepository.findById(entrada.categoria_id()).orElseThrow(() -> new ValidationException("Categoria não encontrada!"));
-		Integer id          = despesaRepository.findAll().size() > 0 ? despesaRepository.maxId() + 1 : 1;
+		Integer id          = Identification.getId(despesaRepository);
 		
 		Despesa despesa     = despesaRepository.insert(new Despesa(id, entrada, cartao, categoria));
 		

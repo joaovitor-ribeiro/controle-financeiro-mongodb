@@ -10,6 +10,7 @@ import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.dto.categoria.CategoriaSaida;
 import controlefinanceiro.model.Categoria;
 import controlefinanceiro.repository.CategoriaRepository;
+import controlefinanceiro.utils.Identification;
 import controlefinanceiro.validators.categoria.IniciaValidatorsCategoria;
 import jakarta.validation.ValidationException;
 
@@ -31,7 +32,7 @@ public class CategoriaService {
 		validacao.inicia(entrada);
 		
 		// I N S E R T 
-		int id = categoriaRepository.findAll().size() > 0 ? categoriaRepository.maxId() + 1 : 1;
+		int id = Identification.getId(categoriaRepository);
 		Categoria responsta = categoriaRepository.insert(new Categoria(id, entrada));
 		
 		// S A Í D A  

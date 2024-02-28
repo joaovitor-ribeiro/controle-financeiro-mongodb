@@ -12,6 +12,7 @@ import controlefinanceiro.dto.usuario.UsuarioSaida;
 import controlefinanceiro.exception.ValidationException;
 import controlefinanceiro.model.Usuario;
 import controlefinanceiro.repository.UsuarioRepository;
+import controlefinanceiro.utils.Identification;
 import controlefinanceiro.validators.usuario.IniciaValidatorsUsuario;
 
 @Service
@@ -36,7 +37,7 @@ public class UsuarioService {
 		validacoesInsert(entrada);
 		
 		// I N S E R T 
-		int id = usuarioRepository.findAll().size() > 0 ? usuarioRepository.maxId() + 1 : 1;
+		int id = Identification.getId(usuarioRepository);
 		Usuario usuario = usuarioRepository.insert(new Usuario(id, entrada, encoder.encode(entrada.senha())));
 		
 		// S A Í D A 

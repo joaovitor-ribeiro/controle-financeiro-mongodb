@@ -10,6 +10,7 @@ import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.dto.cartao.CartaoSaida;
 import controlefinanceiro.model.Cartao;
 import controlefinanceiro.repository.CartaoRepository;
+import controlefinanceiro.utils.Identification;
 import controlefinanceiro.validators.cartao.IniciaValidatorsCartao;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -34,7 +35,7 @@ public class CartaoService {
  		validator.inicia(entrada);
 
 		// I N S E R T 
-		int id = cartaoRepository.findAll().size() > 0 ? cartaoRepository.maxId() + 1 : 1;
+		int id = Identification.getId(cartaoRepository);
 		Cartao cartao = cartaoRepository.insert(new Cartao(id, entrada));	
 		
 		// S A Í D A  
