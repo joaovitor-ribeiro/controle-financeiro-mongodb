@@ -80,6 +80,7 @@ public class CartaoService {
 		cartao.setNome(entrada.nome());
 		cartao.setBandeira(entrada.bandeira());
 		cartao.setLimite(entrada.limite());
+		cartao.setNumero(entrada.numero());
 		
 		Cartao cartaoSave = cartaoRepository.save(cartao);
 		
