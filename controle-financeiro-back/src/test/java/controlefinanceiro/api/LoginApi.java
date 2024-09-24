@@ -7,11 +7,9 @@ import static io.restassured.RestAssured.port;
 
 import org.springframework.stereotype.Service;
 
-import controlefinanceiro.bean.LoginBean;
+import controlefinanceiro.api.bean.LoginBeanTest;
 import controlefinanceiro.bean.TokenBean;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 
 @Service
 public class LoginApi {
@@ -23,24 +21,23 @@ public class LoginApi {
 		port = 8080;
 		basePath = "autenticacao";
 		
-		LoginBean usuario = new LoginBean("jaibinho@email.com", "MTIzNDU2");
-		Response response = given()
+		TokenBean bean = given()
 								.contentType(ContentType.JSON)
-								.body(usuario)
+								.body(new LoginBeanTest())
 						    .when()
-								.post();
+								.post()
+						    .thenReturn()
+						    	.as(TokenBean.class);
 		
-		ResponseBody<?> body = response.getBody();
-		TokenBean tokenBean = body.as(TokenBean.class);
-		setToken("Bearer " + tokenBean.getToken());
+		setToken( bean.getTipo(), bean.getToken() );
 	}
 
 	public static String getToken() {
 		return token;
 	}
 
-	public static void setToken(String token) {
-		LoginApi.token = token;
+	public static void setToken(String tipo, String token) {
+		LoginApi.token = tipo + " " + token;
 	}
 	
 }

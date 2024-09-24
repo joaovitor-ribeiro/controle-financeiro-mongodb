@@ -1,62 +1,43 @@
 package controlefinanceiro.api;
 
 import static io.restassured.RestAssured.basePath;
-import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.port;
 import static org.hamcrest.CoreMatchers.is;
 
+import java.util.Date;
+
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import io.restassured.RestAssured;
+import controlefinanceiro.dto.despesa.DespesaEntrada;
 import io.restassured.http.ContentType;
 
-public class DespesaTestAPI {
-	
-	@BeforeClass
-    public static void setup() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
+public class DespesaTestAPI extends RestAssured {
 	
 	@BeforeAll
-	public static void login() {
-		LoginApi.login();
+	public static void beforeAll() {
+		basePath = "despesa";
 	}
 	
-//	@Test
-//	public void testInserirDespesa() {
-//		baseURI = "http://localhost";
-//		port = 8080;
-//		basePath = "despesa";
-//		
-//		Despesa despesa = new Despesa();
-//		despesa.setCategoria_id(1);
-//		despesa.setDescricao("Akademia");
-//		despesa.setCartao_id(1);
-//		despesa.setValor(100.0);
-//		despesa.setData(new Date());
-//		
-//		given()
-//			.contentType(ContentType.JSON)
-//			.body(despesa)
-//			.header("Authorization", LoginApi.getToken())
-//		.when()
-//			.post("inserir")
-//		.then()
-//			.statusCode(HttpStatus.SC_CREATED);
-//	}
+	@Test
+	public void testInserirDespesa() {
+		DespesaEntrada despesa = new DespesaEntrada(1, "Akademia", 1, 100.0, new Date());
+		
+		given()
+			.contentType(ContentType.JSON)
+			.body(despesa)
+			.header("Authorization", getToken())
+		.when()
+			.post("inserir")
+		.then()
+			.statusCode(HttpStatus.SC_CREATED);
+	}
 	
 	@Test
 	public void testListarDespesa() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "despesa";
-		
 		given()
-			.header("Authorization", LoginApi.getToken())
+			.header("Authorization", getToken())
 		.when()
 			.get("listar")
 		.then()
@@ -67,18 +48,14 @@ public class DespesaTestAPI {
 	
 	@Test
 	public void testListarDespesaUm() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "despesa";
-		
 		given()
-			.header("Authorization", LoginApi.getToken())
+			.header("Authorization", getToken())
 		.when()
 			.get("1")
 		.then()
 			.contentType(ContentType.JSON)
 			.statusCode(HttpStatus.SC_OK)
-			.body("descricao", is("Teste"));
+			.body("descricao", is("Conta de Luz"));
 	}
 
 }

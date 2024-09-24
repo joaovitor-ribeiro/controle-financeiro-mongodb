@@ -55,16 +55,10 @@
   overflow: auto;
 }
 
-.divCardPainel {
-  padding: 3rem;
-}
-
-.tamanhoCardPainel {
-  @media screen and (max-width: 1400px) {
-    max-width: 75%;
+::ng-deep .tamanho_card_painel {
+  height: 100%;
+  width: 100%;
+  .mat-card {
+    padding: 0;
   }
-  @media screen and (max-width: 1180px) {
-    max-width: 100%;
-  }
-  max-width: 60%;
 }

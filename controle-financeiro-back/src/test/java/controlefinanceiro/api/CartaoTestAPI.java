@@ -1,48 +1,32 @@
 package controlefinanceiro.api;
 
 import static io.restassured.RestAssured.basePath;
-import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.port;
 import static org.hamcrest.CoreMatchers.is;
 
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.model.Cartao;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
-public class CartaoTestAPI {
-	
-	@BeforeClass
-    public static void setup() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
+public class CartaoTestAPI extends RestAssured {
 	
 	@BeforeAll
-	public static void login() {
-		LoginApi.login();
+	public static void beforeAll() {
+		basePath = "cartao";
 	}
 	
 	@Test
 	public void testInserirCartao() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "cartao";
-		
-		Cartao cartao = new Cartao();
-		cartao.setNome("Nubank Teste API");
-		cartao.setBandeira("Mastercard");
-		cartao.setNumero("5173863405996183");
-		cartao.setLimite(120.00);
+		CartaoEntrada cartao = new CartaoEntrada("Nubank Teste API", "Mastercard", "5173863405996183", 120.00);
 		
 		given()
 			.contentType(ContentType.JSON)
 			.body(cartao)
-			.header("Authorization", LoginApi.getToken())
+			.header("Authorization", getToken())
 		.when()
 			.post("inserir")
 		.then()
@@ -50,20 +34,32 @@ public class CartaoTestAPI {
 	}
 	
 	@Test
-	public void testListarCartao() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "cartao";
+	public void testEditarCartao() {
+		CartaoEntrada cartao = new CartaoEntrada("Nubank Teste API", "Visa", "4485057546086477", 120.30);
 		
+		given()
+			.contentType(ContentType.JSON)
+			.body(cartao)
+			.header("Authorization", getToken())
+		.when()
+			.put("editar/1")
+		.then()
+			.statusCode(HttpStatus.SC_OK)
+			.body("limite", is ( Float.parseFloat( cartao.limite().toString() ) )  );
+	}
+	
+	
+	@Test
+	public void testListarCartao() {
 		Cartao cartao = new Cartao();
 		cartao.setId(1);
 		cartao.setNome("Teste");
-		cartao.setBandeira("Mastercard");
-		cartao.setNumero("5388708838533791");
+		cartao.setBandeira("Visa");
+		cartao.setNumero("4485043530451679");
 		cartao.setLimite(105.59);
 		
 		given()
-			.header("Authorization", LoginApi.getToken())
+			.header("Authorization", getToken())
 		.when()
 			.get("listar")
 		.then()
@@ -74,18 +70,14 @@ public class CartaoTestAPI {
 	
 	@Test
 	public void testListarCartaoUm() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "cartao";
-		
 		given()
-			.header("Authorization", LoginApi.getToken())
+			.header("Authorization", getToken())
 		.when()
 			.get("1")
 		.then()
 			.contentType(ContentType.JSON)
 			.statusCode(HttpStatus.SC_OK)
-			.body("nome", is("Teste"));
+			.body("nome", is("Nubank Teste API"));
 	}
 
 }

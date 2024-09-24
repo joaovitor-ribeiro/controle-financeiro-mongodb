@@ -75,15 +75,18 @@ export class PainelComponent implements OnInit {
     this.cardPaineis = [
       {
         icone: 'trending_up',
-        texto: 'Ganhos de ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+        titulo: 'Ganhos',
+        descricao: 'R$ ' + this.painel?.totalGanho.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
       },
       {
         icone: 'trending_down',
-        texto: 'Despesas de ' + this.painel?.totalDespesa.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+        titulo: 'Despesas',
+        descricao: 'R$ ' + this.painel?.totalDespesa.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
       },
       {
         icone: 'account_balance',
-        texto: 'Saldo de ' + this.painel?.saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+        titulo: 'Saldo',
+        descricao: 'R$ ' + this.painel?.saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2}),
       },
     ];
   }

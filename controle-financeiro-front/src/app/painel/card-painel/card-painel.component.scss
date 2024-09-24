@@ -5,11 +5,16 @@
 }
 
 .tamanhoIcone {
-  width: 36%;
+  width: 40%;
 }
 
 .tamanhoTexto {
-  width: 51%;
+  width: 60%;
+}
+
+.texto {
+  display: flex;
+  flex-direction: column;
 }
 
 .divLinhaPainel {

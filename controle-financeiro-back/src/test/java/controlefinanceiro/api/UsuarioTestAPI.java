@@ -1,36 +1,25 @@
 package controlefinanceiro.api;
 
 import static io.restassured.RestAssured.basePath;
-import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.port;
 
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import controlefinanceiro.model.Usuario;
-import io.restassured.RestAssured;
+import controlefinanceiro.dto.usuario.UsuarioEntrada;
 import io.restassured.http.ContentType;
 
-public class UsuarioTestAPI {
+public class UsuarioTestAPI extends RestAssured {
 	
-	@BeforeClass
-    public static void setup() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
+	@BeforeAll
+	public static void beforeAll() {
+		basePath = "usuario";
+	}
 	
 	@Test
 	public void testInserirUsuario() {
-		baseURI = "http://localhost";
-		port = 8080;
-		basePath = "usuario";
-		
-		Usuario usuario = new Usuario();
-		usuario.setNome("Usuário normal");
-		usuario.setCpf("51027504027");
-		usuario.setEmail("usunormal@gmail.com");
-		usuario.setSenha("123456");
+		UsuarioEntrada usuario = new UsuarioEntrada("Usuário Teste", "51027504027", "usuarioteste@gmail.com", "123456");
 		
 		given()
 			.contentType(ContentType.JSON)

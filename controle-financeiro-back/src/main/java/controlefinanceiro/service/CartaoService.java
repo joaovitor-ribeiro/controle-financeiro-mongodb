@@ -12,7 +12,6 @@ import controlefinanceiro.model.Cartao;
 import controlefinanceiro.repository.CartaoRepository;
 import controlefinanceiro.utils.Identification;
 import controlefinanceiro.validators.cartao.IniciaValidatorsCartao;
-import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 
 
@@ -30,7 +29,7 @@ public class CartaoService {
 		this.validator = validator;
 	}
 
-	public CartaoSaida inserir (@Valid CartaoEntrada entrada) {
+	public CartaoSaida inserir (CartaoEntrada entrada) {
 		// V A L I D A Ç Ã O 
  		validator.inicia(entrada);
 

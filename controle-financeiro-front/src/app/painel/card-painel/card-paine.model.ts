@@ -1,4 +1,5 @@
 export interface CardPainel {
   icone?: string;
-  texto?: string;
+  titulo?: string;
+  descricao?: string;
 }
