@@ -50,9 +50,9 @@ public class CartaoService {
 			cartoes = cartaoRepository.findByNome(nome);
 		} else if (!(bandeiras == null || bandeiras.isEmpty())) {
 			cartoes = cartaoRepository.findByBandeiras(bandeiras);
+		} else {
+			cartoes = cartaoRepository.findAll();
 		}
-		
-		cartoes = cartaoRepository.findAll();
 		
 		return cartoes.stream().map(c -> new CartaoSaida(c)).toList();
 	}

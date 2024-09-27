@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 import { Categoria, FiltroCategoria } from './categoria.model';
+import { FormularioServiceInterface } from '../shared/utils/formulario-service-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriaService {
+export class CategoriaService implements FormularioServiceInterface {
 
   private url = `${environment.url}categoria/`
 

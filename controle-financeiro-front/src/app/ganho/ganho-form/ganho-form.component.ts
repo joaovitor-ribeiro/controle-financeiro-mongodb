@@ -1,3 +1,4 @@
+import { FormularioUtilsService } from 'src/app/shared/utils/formulario-utils.service';
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
@@ -10,14 +11,16 @@ import { Categoria, FiltroCategoria } from './../../categoria/categoria.model';
 import { CategoriaService } from './../../categoria/categoria.service';
 import { Ganho, GanhoForm } from './../ganho.model';
 import { GanhoService } from './../ganho.service';
+import { EntradaEnvio, FormularioEnvio } from 'src/app/shared/utils/formulario-abstract';
 
 @Component({
   selector: 'app-ganho-form',
   templateUrl: './ganho-form.component.html',
   styleUrls: ['./ganho-form.component.scss']
 })
-export class GanhoFormComponent implements OnInit, AfterContentChecked {
+export class GanhoFormComponent extends FormularioEnvio implements OnInit, AfterContentChecked {
 
+  rotaListagem = '/ganho/listar';
   ganhoFormulario!: FormGroup;
   editar = false;
   carregando = false;
@@ -32,14 +35,17 @@ export class GanhoFormComponent implements OnInit, AfterContentChecked {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private  ganhoService: GanhoService,
+    public  ganhoService: GanhoService,
     private categoriaService: CategoriaService,
-    private router: Router,
-    private alertService: AlertModalService,
+    public  router: Router,
+    public  alertService: AlertModalService,
     private spinner: NgxSpinnerService,
     private adapter: DateAdapter<any>,
     private cdr: ChangeDetectorRef,
-  ) { }
+    public  formularioUtils: FormularioUtilsService
+  ) {
+    super(ganhoService, router, alertService)
+   }
 
   ngAfterContentChecked(): void {
     this.cdr.detectChanges();
@@ -99,28 +105,16 @@ export class GanhoFormComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  limparCampo(campo: string) {
-    this.ganhoFormulario.get(campo)?.setValue('');
-  }
-
-  enviarFormulario() {
-    if (this.ganhoFormulario.invalid) {
-      this.ganhoFormulario.markAllAsTouched();
-    } else {
-      const ganho = this.getGanhoForm();
-
-      if (this.editar){
-        this.ganhoService.editar(this.id, ganho).subscribe(() => {
-          this.router.navigate(['/ganho/listar'], { queryParamsHandling: 'preserve'});
-          this.alertService.showAlertSuccess('Ganho editado com sucesso');
-        })
-      }else{
-        this.ganhoService.inserir(ganho).subscribe(() => {
-          this.router.navigate(['/ganho/listar'], { queryParamsHandling: 'preserve' });
-          this.alertService.showAlertSuccess('Ganho cadastrado com sucesso');
-        });
-      }
-    }
+  envia() {
+    this.enviarFormulario({
+      id: this.id,
+      edit: this.editar,
+      mensagemSucessoEdicao: 'Ganho editado com sucesso',
+      mensagemSucessoInsercao: 'Ganho cadastrado com sucesso',
+      rota: this.rotaListagem,
+      formGroup: this.ganhoFormulario,
+      objeto: this.getGanhoForm()
+    } as  EntradaEnvio );
   }
 
   getGanhoForm(){
@@ -134,10 +128,6 @@ export class GanhoFormComponent implements OnInit, AfterContentChecked {
     ganho.valor =  this.formataValor(ganho.valor);
 
     return ganho;
-  }
-
-  voltar() {
-    this.router.navigate(['/ganho/listar']);
   }
 
   async validarValor(formControl: FormControl) {

@@ -4,11 +4,12 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { Despesa, FiltroDespesa, PageDespesa, Paginacao, DespesaForm } from './despesa.model';
+import { FormularioServiceInterface } from '../shared/utils/formulario-service-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DespesaService {
+export class DespesaService implements FormularioServiceInterface {
 
   private url = `${environment.url}despesa/`
 

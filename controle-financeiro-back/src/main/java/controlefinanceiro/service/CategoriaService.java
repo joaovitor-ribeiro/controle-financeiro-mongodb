@@ -48,9 +48,10 @@ public class CategoriaService {
 			categorias = categoriaRepository.findByNome(nome);
 		} else if (!(tipo == null || tipo.isEmpty() || tipo.equals("T"))) {
 			categorias = categoriaRepository.findByTipo(tipo);
+		} else {
+			categorias = categoriaRepository.findAll();
 		}
 		
-		categorias = categoriaRepository.findAll();
 		
 		return categorias.stream().map(c -> new CategoriaSaida(c)).toList();
 	}

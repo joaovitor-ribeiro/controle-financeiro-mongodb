@@ -1,3 +1,4 @@
+import { FormularioUtilsService } from 'src/app/shared/utils/formulario-utils.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +30,8 @@ export class CartaoListaComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private alertService: AlertModalService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public  formularioUtils: FormularioUtilsService,
   ) { }
 
   ngOnInit(): void {

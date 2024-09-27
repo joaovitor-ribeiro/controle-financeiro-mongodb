@@ -28,7 +28,7 @@
             <mat-label>Nome</mat-label>
             <input matInput type="text" formControlName="nome">
 
-            <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('nome')">
+            <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(filtroFormulario, 'nome')">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
@@ -42,7 +42,7 @@
               <mat-option *ngFor="let tipo of tipos" [value]="tipo.value">{{tipo.label}}</mat-option>
             </mat-select>
 
-            <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('tipo')">
+            <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(filtroFormulario, 'tipo')">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>

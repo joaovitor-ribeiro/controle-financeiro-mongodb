@@ -10,7 +10,7 @@
       </mat-card-title>
     </mat-card-header>
 
-    <form [formGroup]="cartaoFormulario" (ngSubmit)="enviarFormulario()">
+    <form [formGroup]="cartaoFormulario" (ngSubmit)="envia()">
       <mat-card-content class="cardContent">
         <div class="row w-100">
           <div class="col-md mb-1">
@@ -37,7 +37,7 @@
                 Escolha a bandeira.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('bandeira')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(cartaoFormulario, 'bandeira')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -68,7 +68,7 @@
                 O número do cartão não corresponde a bandeira.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('numero')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(cartaoFormulario, 'numero')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -93,7 +93,7 @@
       <mat-card-actions>
         <div class="divBotoes mb-1">
           <button type="submit" mat-raised-button color="primary">Salvar</button>
-          <button type="button" mat-raised-button (click)="voltar()">Voltar</button>
+          <button type="button" mat-raised-button (click)="formularioUtils.voltar(rotaListagem)">Voltar</button>
         </div>
       </mat-card-actions>
 

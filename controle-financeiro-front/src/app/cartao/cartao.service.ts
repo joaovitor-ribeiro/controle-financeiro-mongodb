@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { FormularioServiceInterface } from '../shared/utils/formulario-service-interface';
 import { environment } from './../../environments/environment';
 import { Cartao, FiltroCartao } from './cartao.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartaoService {
+export class CartaoService implements FormularioServiceInterface {
 
   private url = `${environment.url}cartao`
 

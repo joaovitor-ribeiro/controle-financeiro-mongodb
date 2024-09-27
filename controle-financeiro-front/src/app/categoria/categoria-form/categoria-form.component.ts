@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertModalService } from 'src/app/shared/alert-modal/alert-modal.service';
+import { EntradaEnvio, FormularioEnvio } from 'src/app/shared/utils/formulario-abstract';
+import { FormularioUtilsService } from 'src/app/shared/utils/formulario-utils.service';
 
 import { Categoria } from '../categoria.model';
 import { CategoriaService } from '../categoria.service';
@@ -17,8 +19,10 @@ interface Tipo {
   templateUrl: './categoria-form.component.html',
   styleUrls: ['./categoria-form.component.scss']
 })
-export class CategoriaFormComponent implements OnInit {
+export class CategoriaFormComponent extends FormularioEnvio implements OnInit {
 
+
+  rotaListagem = 'categoria/listar';
   categoriaFormulario!: FormGroup;
   carregando = true;
   id!: number;
@@ -41,12 +45,15 @@ export class CategoriaFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private service: CategoriaService,
+    public  service: CategoriaService,
     private spinner: NgxSpinnerService,
-    private router: Router,
+    public  router: Router,
     private route: ActivatedRoute,
-    private alertService: AlertModalService,
-  ) { }
+    public  alertService: AlertModalService,
+    public  formularioUtils: FormularioUtilsService,
+  ) {
+    super(service, router, alertService);
+  }
 
   ngOnInit(): void {
     this.spinner.show();
@@ -79,31 +86,19 @@ export class CategoriaFormComponent implements OnInit {
     });
   }
 
-  enviarFormulario() {
-    if (this.categoriaFormulario.invalid) {
-      this.categoriaFormulario.markAllAsTouched();
-    }else{
-      const categoria = this.categoriaFormulario.getRawValue();
-      if (this.editar) {
-        this.service.editar(this.id, categoria).subscribe(() => {
-          this.router.navigate(['categoria/listar'], { queryParamsHandling: 'preserve' });
-           this.alertService.showAlertSuccess('Categoria editada com sucesso');
-        });
-      } else {
-        this.service.inserir(categoria).subscribe(() => {
-          this.router.navigate(['categoria/listar'], { queryParamsHandling: 'preserve' });
-           this.alertService.showAlertSuccess('Categoria cadastrada com sucesso');
-        });
-      }
-    }
-  }
+  envia() {
+    const categoria = this.categoriaFormulario.getRawValue();
 
-  limparCampo(campo:string) {
-    this.categoriaFormulario.get(campo)?.setValue('');
-  }
+    this.enviarFormulario({
+      id: this.id,
+      edit: this.editar,
+      mensagemSucessoEdicao: 'Categoria editada com sucesso',
+      mensagemSucessoInsercao: 'Categoria cadastrada com sucesso',
+      rota: this.rotaListagem,
+      formGroup: this.categoriaFormulario,
+      objeto: categoria
+    } as  EntradaEnvio );
 
-  voltar() {
-    this.router.navigate(['categoria/listar']);
   }
 
 }

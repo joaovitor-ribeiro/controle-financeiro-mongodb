@@ -10,7 +10,7 @@
       </mat-card-title>
     </mat-card-header>
 
-    <form [formGroup]="despesaFormulario" (ngSubmit)="enviarFormulario()">
+    <form [formGroup]="despesaFormulario" (ngSubmit)="envia()">
       <mat-card-content class="cardContent">
         <div class="row w-100">
           <div class="col-md mb-1">
@@ -25,7 +25,7 @@
                 Escolha o cartão.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('cartao')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(despesaFormulario, 'cartao')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -56,7 +56,7 @@
                 Escolha a categoria.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('categoria')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(despesaFormulario, 'categoria')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -90,7 +90,7 @@
                 Data inválida.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('data')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(despesaFormulario, 'data')">
                 <mat-icon>close</mat-icon>
               </button>
 
@@ -105,7 +105,7 @@
       <mat-card-actions>
         <div class="divBotoes">
           <button type="submit" mat-raised-button color="primary">Salvar</button>
-          <button type="button" mat-raised-button (click)="voltar()">Voltar</button>
+          <button type="button" mat-raised-button (click)="formularioUtils.voltar(rotaListagem)">Voltar</button>
         </div>
       </mat-card-actions>
 

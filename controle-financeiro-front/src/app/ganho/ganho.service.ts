@@ -4,11 +4,12 @@ import { map } from 'rxjs/operators';
 
 import { environment } from './../../environments/environment';
 import { FiltroGanho, Ganho, GanhoForm, PageGanho, Paginacao } from './ganho.model';
+import { FormularioServiceInterface } from '../shared/utils/formulario-service-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GanhoService {
+export class GanhoService implements FormularioServiceInterface {
 
   private url = `${environment.url}ganho/`
 

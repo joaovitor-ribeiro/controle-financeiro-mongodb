@@ -7,7 +7,9 @@ import { Cartao } from 'src/app/cartao/cartao.model';
 import { CartaoService } from 'src/app/cartao/cartao.service';
 import { Categoria, FiltroCategoria } from 'src/app/categoria/categoria.model';
 import { AlertModalService } from 'src/app/shared/alert-modal/alert-modal.service';
+import { FormularioUtilsService } from 'src/app/shared/utils/formulario-utils.service';
 
+import { EntradaEnvio, FormularioEnvio } from 'src/app/shared/utils/formulario-abstract';
 import { CategoriaService } from './../../categoria/categoria.service';
 import { Despesa, DespesaForm } from './../despesa.model';
 import { DespesaService } from './../despesa.service';
@@ -17,8 +19,9 @@ import { DespesaService } from './../despesa.service';
   templateUrl: './despesa-form.component.html',
   styleUrls: ['./despesa-form.component.scss'],
 })
-export class DespesaFormComponent implements OnInit, AfterContentChecked {
+export class DespesaFormComponent extends FormularioEnvio implements OnInit, AfterContentChecked {
 
+  rotaListagem = 'despesa/listar';
   despesaFormulario!: FormGroup;
   carregando = true;
   cartoes!: Cartao[];
@@ -35,14 +38,17 @@ export class DespesaFormComponent implements OnInit, AfterContentChecked {
     private formBuilder: FormBuilder,
     private cartaoService: CartaoService,
     private categoriaService: CategoriaService,
-    private despesaService: DespesaService,
+    public  despesaService: DespesaService,
     private spinner: NgxSpinnerService,
-    private router: Router,
+    public  router: Router,
     private route: ActivatedRoute,
-    private alertService: AlertModalService,
+    public  alertService: AlertModalService,
     private adapter: DateAdapter<any>,
-    private cdr: ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+    public  formularioUtils: FormularioUtilsService,
+  ) {
+    super(despesaService, router, alertService)
+   }
 
   ngAfterContentChecked(): void {
     this.cdr.detectChanges();
@@ -117,27 +123,16 @@ export class DespesaFormComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  limparCampo(campo: string) {
-    this.despesaFormulario.get(campo)?.setValue('');
-  }
-
-  enviarFormulario() {
-    if (this.despesaFormulario.invalid) {
-      this.despesaFormulario.markAllAsTouched();
-    }else{
-      const despesa = this.getDespesaForm();
-      if (this.editar) {
-        this.despesaService.editar(this.id, despesa).subscribe(() => {
-          this.router.navigate(['/despesa/listar'], { queryParamsHandling: 'preserve' });
-           this.alertService.showAlertSuccess('Despesa editada com sucesso');
-        });
-      } else {
-        this.despesaService.inserir(despesa).subscribe(() => {
-          this.router.navigate(['/despesa/listar'], { queryParamsHandling: 'preserve' });
-           this.alertService.showAlertSuccess('Despesa cadastrada com sucesso');
-        });
-      }
-    }
+  envia() {
+    this.enviarFormulario({
+      id: this.id,
+      edit: this.editar,
+      mensagemSucessoEdicao: 'Despesa editada com sucesso',
+      mensagemSucessoInsercao: 'Despesa cadastrada com sucesso',
+      rota: this.rotaListagem,
+      formGroup: this.despesaFormulario,
+      objeto: this.getDespesaForm()
+    } as  EntradaEnvio );
   }
 
   getDespesaForm() {
@@ -152,10 +147,6 @@ export class DespesaFormComponent implements OnInit, AfterContentChecked {
     despesa.valor = this.formataValor(despesa.valor);
 
     return despesa;
-  }
-
-  voltar() {
-    this.router.navigate(['despesa/listar']);
   }
 
   colocarFocoCampoCartao() {

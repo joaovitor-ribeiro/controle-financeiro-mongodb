@@ -41,7 +41,7 @@
               <mat-option *ngFor="let bandeira of bandeiras" [value]="bandeira">{{bandeira}}</mat-option>
             </mat-select>
 
-            <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparBotoes('bandeiras')">
+            <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(filtroFormulario, 'bandeiras')">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>

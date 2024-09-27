@@ -8,6 +8,7 @@ import { ConfirmModalService } from 'src/app/shared/confirm-modal/confirm-modal.
 
 import { Categoria } from '../categoria.model';
 import { CategoriaService } from '../categoria.service';
+import { FormularioUtilsService } from 'src/app/shared/utils/formulario-utils.service';
 
 interface Tipo {
   label: string;
@@ -48,7 +49,8 @@ export class CategoriaListaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private alertService: AlertModalService,
-    private dialogService: ConfirmModalService
+    private dialogService: ConfirmModalService,
+    public  formularioUtils: FormularioUtilsService,
   ) { }
 
   ngOnInit(): void {
@@ -91,10 +93,6 @@ export class CategoriaListaComponent implements OnInit {
 
   inserir(){
     this.router.navigate(['categoria/inserir']);
-  }
-
-  limparBotoes(valor: string) {
-    this.filtroFormulario.get(valor)?.setValue(undefined);
   }
 
   editar(id: number){

@@ -10,7 +10,7 @@
       </mat-card-title>
     </mat-card-header>
 
-    <form [formGroup]="categoriaFormulario" (ngSubmit)="enviarFormulario()">
+    <form [formGroup]="categoriaFormulario" (ngSubmit)="envia()">
       <mat-card-content class="cardContent">
         <div class="row w-100">
           <div class="col-md mb-1">
@@ -37,7 +37,7 @@
                 Escolha o tipo.
               </mat-error>
 
-              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="limparCampo('tipo')">
+              <button matSuffix mat-icon-button type="button" tabindex="-1" (click)="formularioUtils.limparCampo(categoriaFormulario, 'tipo')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -51,7 +51,7 @@
       <mat-card-actions>
         <div class="divBotoes">
           <button type="submit" mat-raised-button color="primary">Salvar</button>
-          <button type="button" mat-raised-button (click)="voltar()">Voltar</button>
+          <button type="button" mat-raised-button (click)="formularioUtils.voltar(rotaListagem)">Voltar</button>
         </div>
       </mat-card-actions>
 
