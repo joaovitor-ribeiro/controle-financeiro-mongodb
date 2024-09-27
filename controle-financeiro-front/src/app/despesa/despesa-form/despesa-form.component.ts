@@ -92,7 +92,7 @@ export class DespesaFormComponent extends FormularioEnvio implements OnInit, Aft
       cartao: this.despesa.cartao.id,
       descricao: this.despesa.descricao,
       categoria: this.despesa.categoria.id,
-      valor: Number(this.despesa.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}),
+      valor:  Number(this.despesa.valor),
       data: new Date(this.despesa.data),
     });
   }

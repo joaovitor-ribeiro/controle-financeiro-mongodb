@@ -91,7 +91,7 @@ export class GanhoFormComponent extends FormularioEnvio implements OnInit, After
     this.ganhoFormulario.patchValue({
       descricao: this.ganho.descricao,
       categoria: this.ganho.categoria.id,
-      valor: Number(this.ganho.valor).toLocaleString('pt-BR', {minimumFractionDigits: 2}),
+      valor: Number(this.ganho.valor),
       data: new Date(this.ganho.data),
     });
   }
