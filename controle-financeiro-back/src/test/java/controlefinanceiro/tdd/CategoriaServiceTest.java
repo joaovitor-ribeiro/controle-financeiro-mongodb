@@ -19,7 +19,7 @@ import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.dto.categoria.CategoriaSaida;
 import controlefinanceiro.model.Categoria;
 import controlefinanceiro.repository.CategoriaRepository;
-import controlefinanceiro.service.CategoriaService;
+import controlefinanceiro.service.categoria.CategoriaService;
 import controlefinanceiro.validators.categoria.IniciaValidatorsCategoria;
 import jakarta.validation.ValidationException;
 

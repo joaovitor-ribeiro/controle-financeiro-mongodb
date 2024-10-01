@@ -1,6 +1,5 @@
-package controlefinanceiro.service;
+package controlefinanceiro.service.categoria;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.dto.categoria.CategoriaSaida;
 import controlefinanceiro.model.Categoria;
 import controlefinanceiro.repository.CategoriaRepository;
+import controlefinanceiro.service.categoria.filtro.CategoriaFiltroContext;
 import controlefinanceiro.utils.Identification;
 import controlefinanceiro.validators.categoria.IniciaValidatorsCategoria;
 import jakarta.validation.ValidationException;
@@ -40,18 +40,8 @@ public class CategoriaService {
 	}
 
 	public List<CategoriaSaida> listar(String nome, String tipo) {
-		List<Categoria> categorias = new ArrayList<Categoria>();
-		 
-		if (!(nome == null || nome.isEmpty()) && !(tipo == null || tipo.isEmpty() || tipo.equals("T"))) {
-			categorias = categoriaRepository.findNomeAndTipo(nome, tipo);
-		} else if (!(nome == null || nome.isEmpty())) {
-			categorias = categoriaRepository.findByNome(nome);
-		} else if (!(tipo == null || tipo.isEmpty() || tipo.equals("T"))) {
-			categorias = categoriaRepository.findByTipo(tipo);
-		} else {
-			categorias = categoriaRepository.findAll();
-		}
-		
+		CategoriaFiltroContext context = new CategoriaFiltroContext(nome, tipo);
+		List<Categoria> categorias = context.buscarCategorias(categoriaRepository, nome, tipo);
 		
 		return categorias.stream().map(c -> new CategoriaSaida(c)).toList();
 	}

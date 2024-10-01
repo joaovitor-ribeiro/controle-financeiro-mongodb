@@ -1,6 +1,5 @@
-package controlefinanceiro.service;
+package controlefinanceiro.service.cartao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.dto.cartao.CartaoSaida;
 import controlefinanceiro.model.Cartao;
 import controlefinanceiro.repository.CartaoRepository;
+import controlefinanceiro.service.cartao.filtro.CartaoFiltroContext;
 import controlefinanceiro.utils.Identification;
 import controlefinanceiro.validators.cartao.IniciaValidatorsCartao;
 import jakarta.validation.ValidationException;
@@ -42,17 +42,9 @@ public class CartaoService {
 	}
 
 	public List<CartaoSaida> listar(String nome, List<String> bandeiras) {
-		List<Cartao> cartoes = new ArrayList<Cartao>();
+		CartaoFiltroContext filtroContext = new CartaoFiltroContext(nome, bandeiras);
 		
-		if(!(nome == null || nome.isEmpty()) && !(bandeiras == null || bandeiras.isEmpty())) {
-			cartoes = cartaoRepository.findNomeAndBandeiras(nome, bandeiras);
-		} else if(!(nome == null || nome.isEmpty())) {
-			cartoes = cartaoRepository.findByNome(nome);
-		} else if (!(bandeiras == null || bandeiras.isEmpty())) {
-			cartoes = cartaoRepository.findByBandeiras(bandeiras);
-		} else {
-			cartoes = cartaoRepository.findAll();
-		}
+		List<Cartao>cartoes = filtroContext.buscarCartoes(cartaoRepository, nome, bandeiras);
 		
 		return cartoes.stream().map(c -> new CartaoSaida(c)).toList();
 	}

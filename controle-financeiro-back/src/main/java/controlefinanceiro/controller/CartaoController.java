@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.dto.cartao.CartaoSaida;
 import controlefinanceiro.model.Cartao;
-import controlefinanceiro.service.CartaoService;
+import controlefinanceiro.service.cartao.CartaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

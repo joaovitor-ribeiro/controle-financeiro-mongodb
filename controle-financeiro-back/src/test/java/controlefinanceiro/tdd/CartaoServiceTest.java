@@ -19,7 +19,7 @@ import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.dto.cartao.CartaoSaida;
 import controlefinanceiro.model.Cartao;
 import controlefinanceiro.repository.CartaoRepository;
-import controlefinanceiro.service.CartaoService;
+import controlefinanceiro.service.cartao.CartaoService;
 import controlefinanceiro.validators.cartao.IniciaValidatorsCartao;
 
 @SpringBootTest

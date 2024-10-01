@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.dto.categoria.CategoriaSaida;
 import controlefinanceiro.model.Categoria;
-import controlefinanceiro.service.CategoriaService;
+import controlefinanceiro.service.categoria.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
