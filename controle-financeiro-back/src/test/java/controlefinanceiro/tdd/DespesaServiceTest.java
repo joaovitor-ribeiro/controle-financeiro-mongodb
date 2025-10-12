@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.dto.categoria.CategoriaEntrada;
@@ -25,6 +26,7 @@ import controlefinanceiro.repository.DespesaCustomRepository;
 import controlefinanceiro.repository.DespesaRepository;
 import controlefinanceiro.service.DespesaService;
 
+@SpringBootTest
 public class DespesaServiceTest {
 	
 	@Mock

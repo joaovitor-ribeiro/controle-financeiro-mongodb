@@ -6,12 +6,16 @@ import static org.hamcrest.CoreMatchers.is;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import controlefinanceiro.dto.cartao.CartaoEntrada;
 import controlefinanceiro.model.Cartao;
 import io.restassured.http.ContentType;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)	
 public class CartaoTestAPI extends RestAssured {
 	
 	@BeforeAll
@@ -20,6 +24,7 @@ public class CartaoTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(1)
 	public void testInserirCartao() {
 		CartaoEntrada cartao = new CartaoEntrada("Nubank Teste API", "Mastercard", "5173863405996183", 120.00);
 		
@@ -34,6 +39,7 @@ public class CartaoTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(2)
 	public void testEditarCartao() {
 		CartaoEntrada cartao = new CartaoEntrada("Nubank Teste API", "Visa", "4485057546086477", 120.30);
 		
@@ -50,6 +56,7 @@ public class CartaoTestAPI extends RestAssured {
 	
 	
 	@Test
+	@Order(3)
 	public void testListarCartao() {
 		Cartao cartao = new Cartao();
 		cartao.setId(1);
@@ -69,6 +76,7 @@ public class CartaoTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(4)
 	public void testListarCartaoUm() {
 		given()
 			.header("Authorization", getToken())

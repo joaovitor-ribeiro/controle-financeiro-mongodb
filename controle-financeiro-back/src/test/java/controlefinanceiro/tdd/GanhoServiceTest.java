@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.dto.ganho.GanhoEntrada;
@@ -22,6 +23,7 @@ import controlefinanceiro.repository.GanhoCustomRepository;
 import controlefinanceiro.repository.GanhoRepository;
 import controlefinanceiro.service.GanhoService;
 
+@SpringBootTest
 public class GanhoServiceTest {
 	
 	@Mock

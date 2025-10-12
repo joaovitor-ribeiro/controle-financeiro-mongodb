@@ -8,11 +8,15 @@ import java.util.Date;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import controlefinanceiro.dto.despesa.DespesaEntrada;
 import io.restassured.http.ContentType;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)	
 public class DespesaTestAPI extends RestAssured {
 	
 	@BeforeAll
@@ -21,6 +25,7 @@ public class DespesaTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(1)
 	public void testInserirDespesa() {
 		DespesaEntrada despesa = new DespesaEntrada(1, "Akademia", 1, 100.0, new Date());
 		
@@ -35,6 +40,7 @@ public class DespesaTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(2)
 	public void testListarDespesa() {
 		given()
 			.header("Authorization", getToken())
@@ -47,6 +53,7 @@ public class DespesaTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(3)
 	public void testListarDespesaUm() {
 		given()
 			.header("Authorization", getToken())
@@ -55,7 +62,7 @@ public class DespesaTestAPI extends RestAssured {
 		.then()
 			.contentType(ContentType.JSON)
 			.statusCode(HttpStatus.SC_OK)
-			.body("descricao", is("Conta de Luz"));
+			.body("descricao", is("Akademia"));
 	}
 
 }

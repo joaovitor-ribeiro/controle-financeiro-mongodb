@@ -8,11 +8,15 @@ import java.util.Date;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import controlefinanceiro.dto.ganho.GanhoEntrada;
 import io.restassured.http.ContentType;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)	
 public class GanhoTestAPI extends RestAssured {
 	
 	@BeforeAll
@@ -21,20 +25,22 @@ public class GanhoTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(1)
 	public void testInserirGanho() {
 		GanhoEntrada ganho = new GanhoEntrada("Akademia", 1, 100.0, new Date());
-		
+		 
 		given()
 			.contentType(ContentType.JSON)
 			.body(ganho)
 			.header("Authorization", getToken())
 		.when()
-			.post("/inserir")
+			.post("inserir")
 		.then()
 			.statusCode(HttpStatus.SC_CREATED);
 	}
 	
 	@Test
+	@Order(2)
 	public void testListarGanho() {
 		given()
 			.header("Authorization", getToken())
@@ -47,6 +53,7 @@ public class GanhoTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(3)
 	public void testListarGanhoUm() {
 		given()
 			.header("Authorization", getToken())
@@ -55,7 +62,7 @@ public class GanhoTestAPI extends RestAssured {
 		.then()
 			.contentType(ContentType.JSON)
 			.statusCode(HttpStatus.SC_OK)
-			.body("descricao", is("Aula particular"));
+			.body("descricao", is("Akademia"));
 	}
 
 }

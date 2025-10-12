@@ -9,12 +9,16 @@ import java.util.Collection;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import controlefinanceiro.dto.categoria.CategoriaEntrada;
 import controlefinanceiro.model.Categoria;
 import io.restassured.http.ContentType;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)	
 public class CategoriaTestAPI extends RestAssured {
 	
 	@BeforeAll
@@ -23,6 +27,7 @@ public class CategoriaTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(1)
 	public void testInserirCategoria() {
 		CategoriaEntrada categoria = new CategoriaEntrada("Aula", "G");
 
@@ -37,6 +42,7 @@ public class CategoriaTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(2)
 	public void testListarCategoria() {
 		Categoria categoria = new Categoria();
 		categoria.setId(1);
@@ -56,6 +62,7 @@ public class CategoriaTestAPI extends RestAssured {
 	}
 	
 	@Test
+	@Order(3)
 	public void testListarCategoriaUm() {
 		given()
 			.header("Authorization", getToken())
@@ -64,7 +71,7 @@ public class CategoriaTestAPI extends RestAssured {
 		.then()
 			.contentType(ContentType.JSON)
 			.statusCode(HttpStatus.SC_OK)
-			.body("nome", is("Academia"));
+			.body("nome", is("Aula"));
 	}
 
 }
