@@ -15,7 +15,7 @@ export class UsuarioService {
   { }
 
   inserir(usuario: Usuario) {
-    return this.http.post<number>(this.url + 'inserir', usuario);
+    return this.http.post<Usuario>(this.url + 'inserir', usuario);
   }
 
   inserirFoto(foto: File, id: number) {

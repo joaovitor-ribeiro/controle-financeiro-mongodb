@@ -6,7 +6,7 @@
   <mat-card class="card cardUsuario">
     <mat-card-header class="cardHeader">
       <mat-card-title>
-        <h2>Cadastro de usuário</h2>
+        <h2>{{title}}</h2>
       </mat-card-title>
     </mat-card-header>
 
@@ -84,7 +84,7 @@
 
           <div class="divBotoesUsuario">
             <a href="*" class="linkFacaLogin">Faça login</a>
-            <button mat-raised-button color="primary" (click)="enviarFormulario()" id="botaoCadastrar">Cadastrar</button>
+            <button mat-raised-button color="primary" (click)="enviarFormulario()" id="botaoCadastrar">{{labelButton}}</button>
           </div>
         </div>
 

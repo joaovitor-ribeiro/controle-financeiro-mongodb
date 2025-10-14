@@ -38,7 +38,7 @@ public class UsuarioService {
 		
 		// I N S E R T 
 		int id = Identification.getId(usuarioRepository);
-		Usuario usuario = usuarioRepository.insert(new Usuario(id, entrada, encoder.encode(entrada.senha())));
+		Usuario usuario = usuarioRepository.insert(new Usuario(id, entrada, encoder.encode(entrada.senha()) ) );
 		
 		// S A Í D A 
 		return new UsuarioSaida(usuario);
@@ -69,7 +69,7 @@ public class UsuarioService {
 		usuario.setNome(entrada.nome());
 		usuario.setCpf(entrada.cpf());
 		usuario.setEmail(entrada.email());
-		usuario.setSenha(entrada.senha());
+		usuario.setSenha(encoder.encode(entrada.senha()));
 		
 		Usuario usuarioSaida = usuarioRepository.save(usuario);
 		

@@ -20,7 +20,9 @@ export class UsuarioFormComponent implements OnInit {
   editar!: boolean;
   foto!: File;
   usuario!: Usuario;
-  objectURL = '../../../assets/menu/usuario.jpg'
+  objectURL = '../../../assets/menu/usuario.jpg';
+  labelButton = 'Cadastrar';
+  title = 'Cadastro de usuário';
 
   get propriedade() {
     return this.usuarioFormulario.controls;
@@ -50,6 +52,8 @@ export class UsuarioFormComponent implements OnInit {
       if (value?.id) {
         this.id = value.id;
         this.editar = true;
+        this.labelButton = 'Editar';
+        this.title = 'Editar cadastro de usuário'
         this.carregando = true;
         this.spinner.show();
         this.usuarioService.retornarUsuarioId(this.id).subscribe(usuario => {
@@ -72,8 +76,7 @@ export class UsuarioFormComponent implements OnInit {
       nome: this.usuario.nome,
       cpf: this.usuario.cpf,
       email: this.usuario.email,
-      senha: this.usuario.senha
-    })
+    });
   }
 
   async validarCPF(formControl: FormControl) {
@@ -92,8 +95,8 @@ export class UsuarioFormComponent implements OnInit {
           this.alertService.showAlertSuccess('Usuário editado com sucesso');
         });
       } else {
-        this.usuarioService.inserir(usuario).subscribe(id => {
-          this.id = id;
+        this.usuarioService.inserir(usuario).subscribe(response => {
+          this.id = response.id;
           this.salvarFoto();
         });
       }

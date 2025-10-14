@@ -52,6 +52,7 @@ public class SecurityConfigurations {
 				authz
 					.requestMatchers(HttpMethod.POST, "/autenticacao").permitAll()
 					.requestMatchers(HttpMethod.POST, "/usuario/inserir").permitAll()
+					.requestMatchers(HttpMethod.POST, "/usuario/inserir/**").permitAll()
 					.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
 					.requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
 					.requestMatchers(HttpMethod.GET, "/configuration/**").permitAll()
