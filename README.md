@@ -24,7 +24,7 @@ Conter o Angular CLI. Obter executando o comando
 ```bash
   npm i -g @angular/cli
 ```
-Conter o Node.js. Obter o Node.js no site: https://nodejs.org/en
+Conter o Node.js, na versão V14.21.3. Obter o Node.js no site: https://nodejs.org/en
 
 Conter o MongoDB instalado. Obter o MongoDB no site: https://www.mongodb.com/
 
