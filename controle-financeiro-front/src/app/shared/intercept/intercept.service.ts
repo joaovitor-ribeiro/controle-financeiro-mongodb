@@ -22,6 +22,7 @@ export class InterceptService implements HttpInterceptor {
   intercept( request: HttpRequest<any>, next: HttpHandler ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
 
+
     const dupReq = request.clone({
       headers:  request.headers.set('Authorization', `Bearer ${token}`),
     });
@@ -31,7 +32,7 @@ export class InterceptService implements HttpInterceptor {
         const stringErro: string = JSON.stringify(error?.error);
         const erros: ErrorModel[] = JSON.parse(stringErro);
         this.erroService.showError(erros).subscribe();
-      } else if (error?.error?.message === 'Access Denied') {
+      } else if (error?.status === 403 || error?.error?.message === 'Access Denied') {
         localStorage.removeItem('token');
         localStorage.removeItem('usuario');
 
